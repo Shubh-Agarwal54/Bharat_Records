@@ -1,0 +1,57 @@
+.setting-page {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+}
+
+.page-header {
+  background-color: var(--primary-purple);
+  color: var(--text-white);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.header-icon {
+  font-size: 28px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.settings-list {
+  background: var(--bg-white);
+  margin-top: var(--spacing-md);
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid #F0F0F0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.setting-item:hover {
+  background-color: #F8F8F8;
+}
+
+.setting-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.setting-icon {
+  font-size: 32px;
+}
+
+.setting-label {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+}

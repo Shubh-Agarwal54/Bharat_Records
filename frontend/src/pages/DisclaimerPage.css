@@ -1,0 +1,44 @@
+.disclaimer-page {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  padding: var(--spacing-xl);
+}
+
+.disclaimer-content {
+  max-width: 100%;
+}
+
+.disclaimer-content h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-3xl);
+  text-align: center;
+}
+
+.disclaimer-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.disclaimer-item {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.disclaimer-item .number {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.disclaimer-item p {
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: justify;
+}

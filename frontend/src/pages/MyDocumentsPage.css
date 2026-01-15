@@ -1,0 +1,35 @@
+.my-documents-page {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+}
+
+.page-header {
+  background-color: var(--primary-purple);
+  color: var(--text-white);
+  padding: var(--spacing-lg);
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: var(--spacing-3xl);
+}
+
+.empty-icon {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.empty-text {
+  color: var(--primary-purple);
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}

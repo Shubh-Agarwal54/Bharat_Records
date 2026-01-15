@@ -1,0 +1,51 @@
+.transfer-money-page {
+  min-height: 100vh;
+  background-color: var(--bg-white);
+}
+
+.transfer-content {
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.transfer-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-purple);
+  margin-bottom: var(--spacing-xl);
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
+  background: none;
+  text-align: left;
+}
+
+.contact-avatar {
+  flex-shrink: 0;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.contact-upi {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+

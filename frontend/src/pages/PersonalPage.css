@@ -1,0 +1,77 @@
+.personal-page {
+  min-height: 100vh;
+  background-color: var(--bg-white);
+  padding-bottom: 80px;
+}
+
+.personal-content {
+  padding: 0;
+}
+
+.doc-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.section-divider {
+  padding: var(--spacing-lg) var(--spacing-lg);
+  text-align: center;
+  position: relative;
+  margin: var(--spacing-2xl) 0 var(--spacing-lg);
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background-color: #D0D0D0;
+}
+
+.section-divider::before {
+  left: 0;
+}
+
+.section-divider::after {
+  right: 0;
+}
+
+.section-divider span {
+  font-size: 14px;
+  color: #999;
+  background-color: var(--bg-white);
+  padding: 0 var(--spacing-md);
+}
+
+.doc-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 var(--spacing-lg);
+}
+
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
+  background: none;
+  text-align: left;
+  border: 1px solid #E0E0E0;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.doc-item-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.doc-item-name {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}

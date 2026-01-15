@@ -1,0 +1,78 @@
+.doc-share-history-page {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  padding-bottom: var(--spacing-2xl);
+}
+
+.page-header {
+  background-color: var(--primary-purple);
+  color: var(--text-white);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.header-icon {
+  font-size: 28px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.history-list {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.history-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.platform-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 32px;
+}
+
+.history-info {
+  flex: 1;
+}
+
+.platform-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.document-name {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.share-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+}

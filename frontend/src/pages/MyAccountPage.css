@@ -1,0 +1,233 @@
+
+.my-account-page {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  background: #F5F5F5;
+  padding-bottom: 20px;
+  overflow-x: hidden;
+}
+
+.account-content {
+  padding: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  gap: 15px;
+}
+
+.avatar-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 5px solid #3D1F8F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-picture-btn {
+  background: linear-gradient(135deg, #3d1f8f 0%, #3d1f8f 100%);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.upload-picture-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.account-form {
+  margin-top: 30px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}
+
+.form-label {
+  color: #3D1F8F;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .form-label {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.form-input-field {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid #3D1F8F;
+  border-radius: 50px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .form-input-field {
+    width: 100%;
+    flex: none;
+  }
+}
+
+.form-input-field.editable {
+  border-color: #3D1F8F;
+}
+
+.form-input-field:focus {
+  border-color: #3D1F8F;
+}
+
+.update-phone-btn,
+.update-email-btn {
+  padding: 12px 30px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 250px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .update-phone-btn,
+  .update-email-btn {
+    max-width: 100%;
+  }
+}
+
+.update-phone-btn:hover,
+.update-email-btn:hover {
+  background: #1976D2;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #fcc;
+}
+
+.success-message {
+  background-color: #efe;
+  color: #3c3;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #cfc;
+}
+
+.save-details-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #3d1f8f 0%, #3d1f8f 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 30px 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.save-details-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.save-details-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.navigation-links {
+  margin-top: 30px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.nav-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #F0F0F0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nav-link:last-child {
+  border-bottom: none;
+}
+
+.nav-link:hover {
+  background: #F8F8F8;
+}
+
+.nav-label {
+  color: #3D1F8F;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+

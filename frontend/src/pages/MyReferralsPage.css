@@ -1,0 +1,133 @@
+.my-referrals-page {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  padding-bottom: var(--spacing-2xl);
+}
+
+.page-header {
+  background-color: var(--primary-purple);
+  color: var(--text-white);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.page-header .back-button {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.referrals-content {
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  color: var(--text-white);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.stat-value {
+  color: var(--text-white);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.redeem-button {
+  width: 100%;
+  max-width: 320px;
+  margin: var(--spacing-xl) auto;
+  display: block;
+  padding: var(--spacing-lg);
+  background-color: var(--green-card);
+  color: var(--text-white);
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.redeem-button:hover {
+  background-color: #45A049;
+}
+
+.referrals-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
+}
+
+.referral-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.referral-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-label {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #2196F3;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.redeemed-badge {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: linear-gradient(135deg, #4CAF50 0%, #45A049 100%);
+  color: var(--text-white);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  transform: rotate(5deg);
+}
