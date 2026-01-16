@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { documentAPI } from '../services/api'
+import DocumentViewerModal from './DocumentViewerModal'
+import DocumentShareModal from './DocumentShareModal'
 import './DocumentUploadTemplate.css'
 
 function DocumentUploadTemplate({ title, icon, documentType }) {
@@ -10,6 +12,10 @@ function DocumentUploadTemplate({ title, icon, documentType }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  
+  // Modal states
+  const [viewerModal, setViewerModal] = useState({ isOpen: false, url: '', fileName: '', fileType: '' })
+  const [shareModal, setShareModal] = useState({ isOpen: false, documentId: '', documentName: '' })
 
   // Get category from documentType
   const getCategory = (docType) => {
@@ -130,6 +136,40 @@ function DocumentUploadTemplate({ title, icon, documentType }) {
     }
   }
 
+  const handleView = async (docId, fileName, fileType) => {
+    try {
+      setError('')
+      const response = await documentAPI.getViewUrl(docId)
+      if (response.status === 'success') {
+        setViewerModal({
+          isOpen: true,
+          url: response.data.signedUrl,
+          fileName: fileName,
+          fileType: fileType
+        })
+      }
+    } catch (err) {
+      console.error('View error:', err)
+      setError('Failed to view document')
+    }
+  }
+
+  const handleShare = (docId, fileName) => {
+    setShareModal({
+      isOpen: true,
+      documentId: docId,
+      documentName: fileName
+    })
+  }
+
+  const closeViewerModal = () => {
+    setViewerModal({ isOpen: false, url: '', fileName: '', fileType: '' })
+  }
+
+  const closeShareModal = () => {
+    setShareModal({ isOpen: false, documentId: '', documentName: '' })
+  }
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-GB', {
       day: '2-digit',
@@ -223,6 +263,17 @@ function DocumentUploadTemplate({ title, icon, documentType }) {
                   <p className="doc-date">Date : {formatDate(doc.uploadDate)}</p>
                   <div className="doc-actions">
                     <button 
+                      className="action-btn-view"
+                      onClick={() => handleView(doc._id, doc.fileName, doc.fileType)}
+                      title="View"
+                    >
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="20" fill="white"/>
+                        <circle cx="20" cy="20" r="5" stroke="#3D1F8F" strokeWidth="2" fill="none"/>
+                        <path d="M12 20C12 20 15 14 20 14C25 14 28 20 28 20C28 20 25 26 20 26C15 26 12 20 12 20Z" stroke="#3D1F8F" strokeWidth="2" fill="none"/>
+                      </svg>
+                    </button>
+                    <button 
                       className="action-btn-download"
                       onClick={() => handleDownload(doc._id, doc.fileName)}
                       title="Download"
@@ -232,6 +283,20 @@ function DocumentUploadTemplate({ title, icon, documentType }) {
                         <line x1="20" y1="13" x2="20" y2="24" stroke="#3D1F8F" strokeWidth="2"/>
                         <path d="M16 21L20 25L24 21" stroke="#3D1F8F" strokeWidth="2" fill="none" strokeLinecap="round"/>
                         <line x1="14" y1="27" x2="26" y2="27" stroke="#3D1F8F" strokeWidth="2"/>
+                      </svg>
+                    </button>
+                    <button 
+                      className="action-btn-share"
+                      onClick={() => handleShare(doc._id, doc.fileName)}
+                      title="Share"
+                    >
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="20" fill="white"/>
+                        <circle cx="27" cy="15" r="3" stroke="#3D1F8F" strokeWidth="2" fill="none"/>
+                        <circle cx="13" cy="20" r="3" stroke="#3D1F8F" strokeWidth="2" fill="none"/>
+                        <circle cx="27" cy="25" r="3" stroke="#3D1F8F" strokeWidth="2" fill="none"/>
+                        <line x1="16" y1="19" x2="24" y2="16" stroke="#3D1F8F" strokeWidth="2"/>
+                        <line x1="16" y1="21" x2="24" y2="24" stroke="#3D1F8F" strokeWidth="2"/>
                       </svg>
                     </button>
                     <button 
@@ -253,6 +318,22 @@ function DocumentUploadTemplate({ title, icon, documentType }) {
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <DocumentViewerModal
+        isOpen={viewerModal.isOpen}
+        onClose={closeViewerModal}
+        documentUrl={viewerModal.url}
+        fileName={viewerModal.fileName}
+        fileType={viewerModal.fileType}
+      />
+
+      <DocumentShareModal
+        isOpen={shareModal.isOpen}
+        onClose={closeShareModal}
+        documentId={shareModal.documentId}
+        documentName={shareModal.documentName}
+      />
     </div>
   )
 }

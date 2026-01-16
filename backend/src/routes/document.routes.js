@@ -7,7 +7,11 @@ import {
   updateDocument,
   deleteDocument,
   getDocumentStats,
-  getDocumentDownloadUrl
+  getDocumentDownloadUrl,
+  getDocumentViewUrl,
+  shareDocument,
+  getShareHistory,
+  revokeShare
 } from '../controllers/document.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 
@@ -40,6 +44,10 @@ router.get('/', getDocuments);
 router.get('/stats/categories', getDocumentStats);
 router.get('/:id', getDocumentById);
 router.get('/:id/download', getDocumentDownloadUrl);
+router.get('/:id/view', getDocumentViewUrl);
+router.post('/:id/share', shareDocument);
+router.get('/:id/share-history', getShareHistory);
+router.delete('/:id/share/:shareId', revokeShare);
 router.put('/:id', updateDocument);
 router.delete('/:id', deleteDocument);
 

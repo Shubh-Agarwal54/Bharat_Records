@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API Base URL - Update this when deploying
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Create axios instance
 const api = axios.create({
@@ -195,6 +195,32 @@ export const documentAPI = {
     const response = await api.get(`/documents/${id}/download`);
     return response.data;
   },
+
+  // Get view URL
+  getViewUrl: async (id) => {
+    const response = await api.get(`/documents/${id}/view`);
+    return response.data;
+  },
+
+  // Share document
+  share: async (id, expiryHours = 24) => {
+    const response = await api.post(`/documents/${id}/share`, {
+      expiryHours
+    });
+    return response.data;
+  },
+
+  // Get share history
+  getShareHistory: async (id) => {
+    const response = await api.get(`/documents/${id}/share-history`);
+    return response.data;
+  },
+
+  // Revoke share
+  revokeShare: async (id, shareId) => {
+    const response = await api.delete(`/documents/${id}/share/${shareId}`);
+    return response.data;
+  },
 };
 
 // Wallet APIs
@@ -254,6 +280,53 @@ export const transactionAPI = {
   // Get transaction statistics
   getStats: async () => {
     const response = await api.get('/transactions/stats/summary');
+    return response.data;
+  },
+};
+
+// Todo APIs
+export const todoAPI = {
+  // Create todo
+  create: async (taskName, priority = 'medium') => {
+    const response = await api.post('/todos', { taskName, priority });
+    return response.data;
+  },
+
+  // Get all todos
+  getAll: async (completed, priority) => {
+    const response = await api.get('/todos', {
+      params: { completed, priority },
+    });
+    return response.data;
+  },
+
+  // Get todo by ID
+  getById: async (id) => {
+    const response = await api.get(`/todos/${id}`);
+    return response.data;
+  },
+
+  // Update todo
+  update: async (id, data) => {
+    const response = await api.put(`/todos/${id}`, data);
+    return response.data;
+  },
+
+  // Toggle todo completion
+  toggle: async (id) => {
+    const response = await api.patch(`/todos/${id}/toggle`);
+    return response.data;
+  },
+
+  // Delete todo
+  delete: async (id) => {
+    const response = await api.delete(`/todos/${id}`);
+    return response.data;
+  },
+
+  // Get statistics
+  getStats: async () => {
+    const response = await api.get('/todos/stats/summary');
     return response.data;
   },
 };

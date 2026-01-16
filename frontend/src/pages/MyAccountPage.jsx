@@ -46,7 +46,24 @@ function MyAccountPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    let processedValue = value
+
+    // Handle PAN Number - auto capitalize and limit to 10 characters
+    if (name === 'panNumber') {
+      processedValue = value.toUpperCase().slice(0, 10)
+    }
+    
+    // Handle Aadhaar Number - only digits and limit to 12
+    if (name === 'aadhaarNumber') {
+      processedValue = value.replace(/\D/g, '').slice(0, 12)
+    }
+    
+    // Handle Mobile Number - only digits and limit to 10
+    if (name === 'mobileNumber') {
+      processedValue = value.replace(/\D/g, '').slice(0, 10)
+    }
+
+    setFormData(prev => ({ ...prev, [name]: processedValue }))
   }
 
   const handleProfilePictureChange = (e) => {
@@ -214,6 +231,9 @@ function MyAccountPage() {
               value={formData.aadhaarNumber}
               onChange={handleChange}
               className="form-input-field"
+              maxLength="12"
+              placeholder="12 digits"
+              inputMode="numeric"
             />
           </div>
 
@@ -222,6 +242,9 @@ function MyAccountPage() {
             <input
               type="text"
               name="panNumber"
+              maxLength="10"
+              placeholder="10 characters (e.g., ABCDE1234F)"
+              style={{ textTransform: 'uppercase' }}
               value={formData.panNumber}
               onChange={handleChange}
               className="form-input-field"
@@ -233,6 +256,9 @@ function MyAccountPage() {
             <input
               type="text"
               name="mobileNumber"
+              maxLength="10"
+              placeholder="10 digits"
+              inputMode="numeric"
               value={formData.mobileNumber}
               onChange={handleChange}
               className="form-input-field editable"

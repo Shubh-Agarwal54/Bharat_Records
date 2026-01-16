@@ -266,3 +266,177 @@ export const getDocumentDownloadUrl = async (req, res) => {
     });
   }
 };
+
+// @desc    Get signed URL for document view
+// @route   GET /api/documents/:id/view
+// @access  Private
+export const getDocumentViewUrl = async (req, res) => {
+  try {
+    const document = await Document.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+      isDeleted: false
+    });
+    
+    if (!document) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Document not found'
+      });
+    }
+    
+    // Generate signed URL valid for 30 minutes for viewing
+    const signedUrl = await getSignedUrl(document.s3Key, 1800);
+    
+    res.json({
+      status: 'success',
+      data: { 
+        signedUrl,
+        fileName: document.fileName,
+        fileType: document.fileType,
+        document: {
+          _id: document._id,
+          title: document.title,
+          fileName: document.fileName,
+          fileType: document.fileType,
+          uploadDate: document.uploadDate,
+          category: document.category,
+          documentType: document.documentType
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+};
+
+// @desc    Generate share link for document
+// @route   POST /api/documents/:id/share
+// @access  Private
+export const shareDocument = async (req, res) => {
+  try {
+    const { expiryHours = 24, note } = req.body;
+    
+    const document = await Document.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+      isDeleted: false
+    });
+    
+    if (!document) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Document not found'
+      });
+    }
+    
+    // Calculate expiry time
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + expiryHours);
+    
+    // Add to share history
+    document.shareHistory.push({
+      sharedWith: note || `Link - ${expiryHours}h expiry`,
+      sharedAt: new Date(),
+      expiresAt,
+      accessCount: 0
+    });
+    
+    await document.save();
+    
+    const shareId = document.shareHistory[document.shareHistory.length - 1]._id;
+    
+    // Generate temporary signed URL for sharing
+    const signedUrl = await getSignedUrl(document.s3Key, expiryHours * 3600);
+    
+    res.json({
+      status: 'success',
+      message: 'Share link generated successfully',
+      data: {
+        shareId,
+        expiresAt,
+        signedUrl,
+        shareLink: signedUrl
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+};
+
+// @desc    Get share history for a document
+// @route   GET /api/documents/:id/share-history
+// @access  Private
+export const getShareHistory = async (req, res) => {
+  try {
+    const document = await Document.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+      isDeleted: false
+    });
+    
+    if (!document) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Document not found'
+      });
+    }
+    
+    res.json({
+      status: 'success',
+      data: {
+        shareHistory: document.shareHistory.sort((a, b) => b.sharedAt - a.sharedAt)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+};
+
+// @desc    Revoke document share
+// @route   DELETE /api/documents/:id/share/:shareId
+// @access  Private
+export const revokeShare = async (req, res) => {
+  try {
+    const { id, shareId } = req.params;
+    
+    const document = await Document.findOne({
+      _id: id,
+      user: req.user._id,
+      isDeleted: false
+    });
+    
+    if (!document) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Document not found'
+      });
+    }
+    
+    // Remove share from history
+    document.shareHistory = document.shareHistory.filter(
+      share => share._id.toString() !== shareId
+    );
+    
+    await document.save();
+    
+    res.json({
+      status: 'success',
+      message: 'Share access revoked successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+};

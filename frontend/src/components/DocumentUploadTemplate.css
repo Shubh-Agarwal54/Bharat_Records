@@ -318,11 +318,45 @@
   display: flex;
   gap: var(--spacing-sm);
   margin-top: 5px;
+  flex-wrap: wrap;
 }
 
 .action-btn-edit,
 .action-btn-delete,
-.action-btn-download {
+.action-btn-download,
+.action-btn-view,
+.action-btn-share {
   background: none;
   padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
 }
+
+.action-btn-view:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(61, 31, 143, 0.3));
+}
+
+.action-btn-download:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(61, 31, 143, 0.3));
+}
+
+.action-btn-share:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(0, 168, 232, 0.3));
+}
+
+.action-btn-delete:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(255, 68, 68, 0.3));
+}
+
+.action-btn-view:active,
+.action-btn-download:active,
+.action-btn-share:active,
+.action-btn-delete:active {
+  transform: scale(0.95);
+}
+

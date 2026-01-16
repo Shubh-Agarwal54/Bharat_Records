@@ -73,7 +73,7 @@ function HomePage() {
         </div>
       </div>
 
-      <div className="todo-card">
+      <div className="todo-card" onClick={() => navigate('/add-task')}>
         <div className="todo-icon">
           <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
             <rect x="10" y="5" width="40" height="50" rx="4" fill="#FDB913"/>

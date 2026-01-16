@@ -27,7 +27,7 @@ function MenuPage() {
 
   const menuItems = [
     { icon: '👤', label: 'My Account', path: '/my-account' },
-    { icon: '📄', label: 'My Document', path: '/add-document' },
+    { icon: '📄', label: 'My Document', path: '/my-documents' },
     { icon: '📊', label: 'Report', path: '/reports' },
     { icon: '⚙️', label: 'Setting', path: '/setting' },
     { icon: '🕒', label: 'Doc Share History', path: '/doc-share-history' },

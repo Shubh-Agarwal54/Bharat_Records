@@ -11,6 +11,7 @@ import userRoutes from './routes/user.routes.js';
 import documentRoutes from './routes/document.routes.js';
 import walletRoutes from './routes/wallet.routes.js';
 import transactionRoutes from './routes/transaction.routes.js';
+import todoRoutes from './routes/todo.routes.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
@@ -69,6 +70,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/wallet', walletRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/todos', todoRoutes);
 
 // 404 handler
 app.use((req, res) => {

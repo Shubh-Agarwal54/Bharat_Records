@@ -50,6 +50,7 @@ import DocShareHistoryPage from './pages/DocShareHistoryPage'
 import HelpCenterPage from './pages/HelpCenterPage'
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import TermsOfServicePage from './pages/TermsOfServicePage'
+import AddTaskPage from './pages/AddTaskPage'
 import { useEffect } from 'react'
 
 function App() {
@@ -107,6 +108,7 @@ function App() {
         <Route path="/help-center" element={<HelpCenterPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        <Route path="/add-task" element={<AddTaskPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

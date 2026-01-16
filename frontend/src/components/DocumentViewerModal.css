@@ -1,0 +1,170 @@
+.doc-viewer-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: docViewerFadeIn 0.3s ease-out;
+}
+
+@keyframes docViewerFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.doc-viewer-modal-container {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: docViewerSlideUp 0.3s ease-out;
+}
+
+@keyframes docViewerSlideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.doc-viewer-modal-header {
+  background: linear-gradient(135deg, #3D1F8F 0%, #5d3fbf 100%);
+  color: white;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.doc-viewer-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 16px;
+}
+
+.doc-viewer-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.doc-viewer-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.doc-viewer-close-btn:active {
+  transform: scale(0.95);
+}
+
+.doc-viewer-modal-body {
+  flex: 1;
+  overflow: auto;
+  background: #f5f5f5;
+  position: relative;
+  min-height: 400px;
+}
+
+.doc-viewer-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
+  background: white;
+}
+
+.doc-viewer-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 75vh;
+  object-fit: contain;
+  margin: 0 auto;
+  background: white;
+}
+
+.doc-viewer-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #3D1F8F;
+}
+
+.doc-viewer-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #3D1F8F;
+  border-radius: 50%;
+  animation: docViewerSpin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes docViewerSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.doc-viewer-unsupported {
+  padding: 60px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .doc-viewer-modal-backdrop {
+    padding: 0;
+  }
+
+  .doc-viewer-modal-container {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .doc-viewer-modal-header {
+    border-radius: 0;
+  }
+
+  .doc-viewer-modal-title {
+    font-size: 16px;
+  }
+}
