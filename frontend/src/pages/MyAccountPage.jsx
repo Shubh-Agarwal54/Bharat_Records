@@ -280,7 +280,6 @@ function MyAccountPage() {
 
           <button className="update-email-btn" onClick={() => navigate('/update-phone-otp')}>Update Email</button>
         </div>
-
         <button 
           className="save-details-btn" 
           onClick={handleSave}

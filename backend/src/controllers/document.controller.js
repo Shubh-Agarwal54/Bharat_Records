@@ -236,9 +236,12 @@ export const getDocumentStats = async (req, res) => {
 // @access  Private
 export const getDocumentDownloadUrl = async (req, res) => {
   try {
+    // Determine which user's document to fetch based on nominee access
+    const userId = req.nomineeAccess ? req.nomineeAccess.accountOwnerId : req.user._id;
+    
     const document = await Document.findOne({
       _id: req.params.id,
-      user: req.user._id,
+      user: userId,
       isDeleted: false
     });
     
@@ -247,6 +250,25 @@ export const getDocumentDownloadUrl = async (req, res) => {
         status: 'error',
         message: 'Document not found'
       });
+    }
+    
+    // If accessing as nominee, check permissions
+    if (req.nomineeAccess) {
+      // Check if document category is allowed
+      if (!req.nomineeAccess.canViewCategories.includes(document.category)) {
+        return res.status(403).json({
+          status: 'error',
+          message: 'You do not have permission to access this document category'
+        });
+      }
+      
+      // Check if access level allows download
+      if (req.nomineeAccess.accessLevel === 'view') {
+        return res.status(403).json({
+          status: 'error',
+          message: 'Your access level does not permit downloading documents'
+        });
+      }
     }
     
     // Generate signed URL valid for 1 hour
@@ -272,9 +294,12 @@ export const getDocumentDownloadUrl = async (req, res) => {
 // @access  Private
 export const getDocumentViewUrl = async (req, res) => {
   try {
+    // Determine which user's document to fetch based on nominee access
+    const userId = req.nomineeAccess ? req.nomineeAccess.accountOwnerId : req.user._id;
+    
     const document = await Document.findOne({
       _id: req.params.id,
-      user: req.user._id,
+      user: userId,
       isDeleted: false
     });
     
@@ -283,6 +308,16 @@ export const getDocumentViewUrl = async (req, res) => {
         status: 'error',
         message: 'Document not found'
       });
+    }
+    
+    // If accessing as nominee, check if document category is allowed
+    if (req.nomineeAccess) {
+      if (!req.nomineeAccess.canViewCategories.includes(document.category)) {
+        return res.status(403).json({
+          status: 'error',
+          message: 'You do not have permission to access this document category'
+        });
+      }
     }
     
     // Generate signed URL valid for 30 minutes for viewing

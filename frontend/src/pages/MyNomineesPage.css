@@ -1,0 +1,760 @@
+/* Main Nominees Page Container */
+.nominees-page-main {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  padding-bottom: 20px;
+  overflow-x: hidden;
+}
+
+/* Header Section */
+.nominees-page-header-section {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 12px rgba(61, 31, 143, 0.3);
+}
+
+.nominees-back-arrow-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nominees-back-arrow-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.nominees-page-main-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+/* Content Wrapper */
+.nominees-page-content-wrapper {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Stats Grid */
+.nominees-stats-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.nominees-stat-card-item {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.nominees-stat-card-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(61, 31, 143, 0.2);
+}
+
+.nominees-stat-card-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.nominees-stat-card-details {
+  flex: 1;
+}
+
+.nominees-stat-card-value-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: #3D1F8F;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.nominees-stat-card-label-text {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Alert Messages */
+.nominees-error-alert-msg {
+  background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+}
+
+.nominees-success-alert-msg {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+/* Add New Button */
+.nominees-add-new-btn {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(61, 31, 143, 0.3);
+  transition: all 0.3s ease;
+}
+
+.nominees-add-new-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(61, 31, 143, 0.4);
+}
+
+/* Loading Spinner */
+.nominees-loading-spinner-wrap {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #3D1F8F;
+  font-weight: 600;
+}
+
+/* Empty State */
+.nominees-empty-state-container {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nominees-empty-state-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.nominees-empty-state-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3D1F8F;
+  margin: 0 0 10px 0;
+}
+
+.nominees-empty-state-desc {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+/* Nominees List */
+.nominees-list-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* Nominee Card */
+.nominee-card-wrapper {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.nominee-card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(61, 31, 143, 0.2);
+  border-color: #3D1F8F;
+}
+
+.nominee-card-top-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.nominee-card-icon-badge {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.nominee-card-info-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.nominee-card-name-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3D1F8F;
+  margin: 0 0 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nominee-card-relationship-text {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.nominee-card-share-badge {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Nominee Details Grid */
+.nominee-card-details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.nominee-detail-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.nominee-detail-row-label {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.nominee-detail-row-value {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Nominee Notes */
+.nominee-notes-section {
+  background: #fff9e6;
+  border-left: 4px solid #3D1F8F;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.nominee-notes-section strong {
+  color: #3D1F8F;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Nominee Actions */
+.nominee-card-actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nominee-action-edit-btn,
+.nominee-action-delete-btn,
+.nominee-action-grant-btn,
+.nominee-action-revoke-btn,
+.nominee-action-pending-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nominee-action-edit-btn {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(61, 31, 143, 0.3);
+}
+
+.nominee-action-edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(61, 31, 143, 0.4);
+}
+
+.nominee-action-grant-btn {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.nominee-action-grant-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 204, 113, 0.4);
+}
+
+.nominee-action-grant-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nominee-action-revoke-btn {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+.nominee-action-revoke-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+}
+
+.nominee-action-pending-btn {
+  background: #95a5a6;
+  color: white;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.nominee-action-delete-btn {
+  background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+}
+
+.nominee-action-delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 71, 87, 0.4);
+}
+
+/* Access Status Box */
+.nominee-access-status-box {
+  background: linear-gradient(135deg, #e8ecf1 0%, #f5f7fa 100%);
+  border-left: 4px solid #3D1F8F;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.nominee-access-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.nominee-access-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3D1F8F;
+}
+
+.nominee-access-level-badge {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nominee-last-access-text {
+  font-size: 11px;
+  color: #666;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Access Modal Specific Styles */
+.nominee-access-modal-box {
+  max-width: 700px;
+}
+
+.nominee-access-modal-content {
+  padding: 25px;
+}
+
+.nominee-access-info-box {
+  background: linear-gradient(135deg, #e8f4fd 0%, #d4e9f7 100%);
+  border-left: 4px solid #3D1F8F;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.nominee-access-info-box p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.nominee-access-info-box strong {
+  color: #3D1F8F;
+  font-weight: 700;
+}
+
+.nominee-categories-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.nominee-category-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.nominee-category-checkbox-label:hover {
+  background: #e8ecf1;
+  border-color: #3D1F8F;
+}
+
+.nominee-category-checkbox-input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #3D1F8F;
+}
+
+.nominee-category-checkbox-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-transform: capitalize;
+}
+
+/* Nominee Actions */
+.nominee-card-actions-row {
+  display: flex;
+  gap: 10px;
+}
+
+.nominee-action-edit-btn,
+.nominee-action-delete-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nominee-action-edit-btn {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(61, 31, 143, 0.3);
+}
+
+.nominee-action-edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(61, 31, 143, 0.4);
+}
+
+.nominee-action-delete-btn {
+  background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+}
+
+.nominee-action-delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 71, 87, 0.4);
+}
+
+/* Modal Styles */
+.nominee-modal-overlay-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.nominee-modal-content-box {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.nominee-modal-header-bar {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px 20px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nominee-modal-title-text {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.nominee-modal-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.nominee-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Form Styles */
+.nominee-form-container {
+  padding: 25px;
+}
+
+.nominee-form-row {
+  margin-bottom: 20px;
+}
+
+.nominee-form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3D1F8F;
+  margin-bottom: 8px;
+}
+
+.nominee-form-input,
+.nominee-form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.nominee-form-input:focus,
+.nominee-form-textarea:focus {
+  outline: none;
+  border-color: #3D1F8F;
+  box-shadow: 0 0 0 3px rgba(61, 31, 143, 0.1);
+}
+
+.nominee-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.nominee-form-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3D1F8F;
+  margin: 25px 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.nominee-form-actions-row {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.nominee-form-cancel-btn,
+.nominee-form-submit-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nominee-form-cancel-btn {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.nominee-form-cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+.nominee-form-submit-btn {
+  background: linear-gradient(135deg, #3D1F8F 0%, #2D165F 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(61, 31, 143, 0.3);
+}
+
+.nominee-form-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(61, 31, 143, 0.4);
+}
+
+.nominee-form-submit-btn:disabled,
+.nominee-form-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nominees-page-main-title {
+    font-size: 20px;
+  }
+
+  .nominees-stats-grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .nominees-list-cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .nominee-modal-content-box {
+    max-height: 85vh;
+  }
+
+  .nominee-form-container {
+    padding: 20px;
+  }
+
+  .nominee-card-top-section {
+    flex-wrap: wrap;
+  }
+
+  .nominee-card-share-badge {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .nominees-page-header-section {
+    padding: 15px;
+  }
+
+  .nominees-page-main-title {
+    font-size: 18px;
+  }
+
+  .nominees-page-content-wrapper {
+    padding: 15px;
+  }
+
+  .nominee-card-wrapper {
+    padding: 15px;
+  }
+
+  .nominee-card-name-text {
+    font-size: 16px;
+  }
+
+  .nominees-stat-card-value-text {
+    font-size: 24px;
+  }
+
+  .nominee-form-actions-row {
+    flex-direction: column;
+  }
+
+  .nominee-card-actions-row {
+    flex-direction: column;
+  }
+}

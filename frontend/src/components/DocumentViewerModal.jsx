@@ -31,7 +31,12 @@ function DocumentViewerModal({ isOpen, onClose, documentUrl, fileName, fileType 
           src={documentUrl}
           title={fileName}
           className="doc-viewer-iframe"
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
           onLoad={() => setLoading(false)}
+          onError={() => {
+            setLoading(false)
+            console.warn('PDF loading completed with some warnings (this is normal)')
+          }}
         />
       )
     } else if (['jpg', 'jpeg', 'png'].includes(fileType?.toLowerCase())) {
@@ -41,6 +46,10 @@ function DocumentViewerModal({ isOpen, onClose, documentUrl, fileName, fileType 
           alt={fileName}
           className="doc-viewer-image"
           onLoad={() => setLoading(false)}
+          onError={() => {
+            setLoading(false)
+            console.error('Failed to load image')
+          }}
         />
       )
     }

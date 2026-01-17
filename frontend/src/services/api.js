@@ -159,9 +159,9 @@ export const documentAPI = {
   },
 
   // Get all documents
-  getAll: async (category, documentType) => {
+  getAll: async (category, documentType, accountId) => {
     const response = await api.get('/documents', {
-      params: { category, documentType },
+      params: { category, documentType, accountId },
     });
     return response.data;
   },
@@ -191,14 +191,18 @@ export const documentAPI = {
   },
 
   // Get download URL
-  getDownloadUrl: async (id) => {
-    const response = await api.get(`/documents/${id}/download`);
+  getDownloadUrl: async (id, accountId = null) => {
+    const response = await api.get(`/documents/${id}/download`, {
+      params: { accountId },
+    });
     return response.data;
   },
 
   // Get view URL
-  getViewUrl: async (id) => {
-    const response = await api.get(`/documents/${id}/view`);
+  getViewUrl: async (id, accountId = null) => {
+    const response = await api.get(`/documents/${id}/view`, {
+      params: { accountId },
+    });
     return response.data;
   },
 
@@ -330,5 +334,80 @@ export const todoAPI = {
     return response.data;
   },
 };
+// Nominee APIs
+export const nomineeAPI = {
+  // Create nominee
+  create: async (data) => {
+    const response = await api.post('/nominees', data);
+    return response.data;
+  },
 
+  // Get all nominees
+  getAll: async (isActive) => {
+    const response = await api.get('/nominees', {
+      params: { isActive }
+    });
+    return response.data;
+  },
+
+  // Get nominee by ID
+  getById: async (id) => {
+    const response = await api.get(`/nominees/${id}`);
+    return response.data;
+  },
+
+  // Update nominee
+  update: async (id, data) => {
+    const response = await api.put(`/nominees/${id}`, data);
+    return response.data;
+  },
+
+  // Delete nominee
+  delete: async (id) => {
+    const response = await api.delete(`/nominees/${id}`);
+    return response.data;
+  },
+
+  // Get nominee statistics
+  getStats: async () => {
+    const response = await api.get('/nominees/stats/summary');
+    return response.data;
+  },
+
+  // Send access invitation
+  invite: async (id, accessLevel, canViewCategories, expiresInDays) => {
+    const response = await api.post(`/nominees/${id}/invite`, {
+      accessLevel,
+      canViewCategories,
+      expiresInDays
+    });
+    return response.data;
+  },
+
+  // Revoke access
+  revokeAccess: async (id) => {
+    const response = await api.put(`/nominees/${id}/revoke`);
+    return response.data;
+  },
+
+  // Get accounts where I'm a nominee
+  getMyAccess: async () => {
+    const response = await api.get('/nominees/my-access');
+    return response.data;
+  },
+
+  // Accept invite
+  acceptInvite: async (token, userId) => {
+    const response = await api.post(`/nominees/accept-invite/${token}`, {
+      userId
+    });
+    return response.data;
+  },
+
+  // Log access
+  logAccess: async (id) => {
+    const response = await api.patch(`/nominees/${id}/access-log`);
+    return response.data;
+  },
+};
 export default api;

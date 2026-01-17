@@ -51,6 +51,9 @@ import HelpCenterPage from './pages/HelpCenterPage'
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import TermsOfServicePage from './pages/TermsOfServicePage'
 import AddTaskPage from './pages/AddTaskPage'
+import MyNomineesPage from './pages/MyNomineesPage'
+import NomineeAccessPage from './pages/NomineeAccessPage'
+import AcceptNomineeInvitePage from './pages/AcceptNomineeInvitePage'
 import { useEffect } from 'react'
 
 function App() {
@@ -109,6 +112,9 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
         <Route path="/add-task" element={<AddTaskPage />} />
+        <Route path="/my-nominees" element={<MyNomineesPage />} />
+        <Route path="/nominee-access" element={<NomineeAccessPage />} />
+        <Route path="/nominee-invite/:token" element={<AcceptNomineeInvitePage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

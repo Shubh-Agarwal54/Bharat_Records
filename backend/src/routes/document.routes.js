@@ -14,6 +14,7 @@ import {
   revokeShare
 } from '../controllers/document.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
+import { checkNomineeAccess, getDocumentsWithNomineeAccess } from '../middleware/nominee.middleware.js';
 
 const router = express.Router();
 
@@ -40,11 +41,11 @@ const upload = multer({
 router.use(protect);
 
 router.post('/upload', upload.single('document'), uploadDocument);
-router.get('/', getDocuments);
+router.get('/', checkNomineeAccess, getDocumentsWithNomineeAccess);
 router.get('/stats/categories', getDocumentStats);
 router.get('/:id', getDocumentById);
-router.get('/:id/download', getDocumentDownloadUrl);
-router.get('/:id/view', getDocumentViewUrl);
+router.get('/:id/download', checkNomineeAccess, getDocumentDownloadUrl);
+router.get('/:id/view', checkNomineeAccess, getDocumentViewUrl);
 router.post('/:id/share', shareDocument);
 router.get('/:id/share-history', getShareHistory);
 router.delete('/:id/share/:shareId', revokeShare);
