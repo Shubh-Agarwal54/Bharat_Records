@@ -298,15 +298,105 @@
 
 .doc-info {
   flex: 1;
-  
-  
+}
+
+.doc-name-row {
+  margin-bottom: 4px;
+}
+
+.doc-name-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .doc-name {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 4px;
+  margin: 0;
+}
+
+.doc-name-edit-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.doc-name-edit-btn:hover {
+  opacity: 1;
+  background: rgba(61, 31, 143, 0.1);
+  transform: scale(1.1);
+}
+
+.doc-name-edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.doc-name-input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 2px solid #3D1F8F;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.doc-name-input:focus {
+  box-shadow: 0 0 0 3px rgba(61, 31, 143, 0.1);
+}
+
+.doc-name-save-btn,
+.doc-name-cancel-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.doc-name-save-btn {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+}
+
+.doc-name-save-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.doc-name-cancel-btn {
+  background: linear-gradient(135deg, #FF5252 0%, #E04040 100%);
+  color: white;
+}
+
+.doc-name-cancel-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
+}
+
+.doc-name-save-btn:active,
+.doc-name-cancel-btn:active {
+  transform: scale(0.95);
 }
 
 .doc-date {

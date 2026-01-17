@@ -199,6 +199,70 @@
   cursor: not-allowed;
 }
 
+.doc-share-social-section {
+  margin-top: 24px;
+}
+
+.doc-share-social-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.doc-share-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.doc-share-social-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.doc-share-social-btn:active {
+  transform: translateY(0);
+}
+
+.doc-share-social-btn.whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+}
+
+.doc-share-social-btn.telegram {
+  background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+}
+
+.doc-share-social-btn.facebook {
+  background: linear-gradient(135deg, #1877F2 0%, #0D5DBE 100%);
+}
+
+.doc-share-social-btn.instagram {
+  background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%);
+}
+
+.doc-share-social-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .doc-share-social-buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
 .doc-share-link-container {
   margin-top: 20px;
   padding: 16px;

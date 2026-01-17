@@ -18,6 +18,10 @@ function InvestmentDocumentUploadTemplate({ title, icon, documentType, formField
   const [viewerModal, setViewerModal] = useState({ isOpen: false, url: '', fileName: '', fileType: '' })
   const [shareModal, setShareModal] = useState({ isOpen: false, documentId: '', documentName: '' })
 
+  // Rename state
+  const [editingDocId, setEditingDocId] = useState(null)
+  const [editTitle, setEditTitle] = useState('')
+
   // Initialize form data
   useEffect(() => {
     const initialData = {}
@@ -172,6 +176,36 @@ function InvestmentDocumentUploadTemplate({ title, icon, documentType, formField
 
   const closeShareModal = () => {
     setShareModal({ isOpen: false, documentId: '', documentName: '' })
+  }
+
+  const startRename = (docId, currentTitle) => {
+    setEditingDocId(docId)
+    setEditTitle(currentTitle)
+  }
+
+  const cancelRename = () => {
+    setEditingDocId(null)
+    setEditTitle('')
+  }
+
+  const handleRename = async (docId) => {
+    if (!editTitle.trim()) {
+      setError('Title cannot be empty')
+      return
+    }
+
+    try {
+      const response = await documentAPI.update(docId, { title: editTitle })
+      if (response.status === 'success') {
+        setSuccess('Document renamed successfully!')
+        setEditingDocId(null)
+        setEditTitle('')
+        await loadDocuments()
+      }
+    } catch (err) {
+      console.error('Rename error:', err)
+      setError('Failed to rename document')
+    }
   }
 
   const formatDate = (dateString) => {
@@ -338,7 +372,48 @@ function InvestmentDocumentUploadTemplate({ title, icon, documentType, formField
                 </div>
 
                 <div className="doc-info">
-                  <p className="doc-name">Name : {doc.fileName}</p>
+                  <div className="doc-name-row">
+                    {editingDocId === doc._id ? (
+                      <div className="doc-name-edit">
+                        <input
+                          type="text"
+                          className="doc-name-input"
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && handleRename(doc._id)}
+                          autoFocus
+                        />
+                        <button 
+                          className="doc-name-save-btn"
+                          onClick={() => handleRename(doc._id)}
+                          title="Save"
+                        >
+                          ✓
+                        </button>
+                        <button 
+                          className="doc-name-cancel-btn"
+                          onClick={cancelRename}
+                          title="Cancel"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="doc-name-display">
+                        <p className="doc-name">Name : {doc.title || doc.fileName}</p>
+                        <button 
+                          className="doc-name-edit-btn"
+                          onClick={() => startRename(doc._id, doc.title || doc.fileName)}
+                          title="Rename"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="#3D1F8F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#3D1F8F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                   <p className="doc-date">Date : {formatDate(doc.uploadDate)}</p>
                   {doc.metadata && Object.keys(doc.metadata).length > 0 && (
                     <div className="doc-metadata">

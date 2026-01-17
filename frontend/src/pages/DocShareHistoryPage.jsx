@@ -64,9 +64,21 @@ function DocShareHistoryPage() {
     return new Date(expiryDate) < new Date()
   }
 
+  const getPlatformIcon = (sharedWith) => {
+    if (!sharedWith) return '🔗'
+    
+    const lower = sharedWith.toLowerCase()
+    if (lower.includes('whatsapp')) return '💬'
+    if (lower.includes('telegram')) return '✈️'
+    if (lower.includes('facebook')) return '📘'
+    if (lower.includes('instagram')) return '📷'
+    if (lower.includes('link')) return '🔗'
+    return '📤'
+  }
+
   const getStatusIcon = (share) => {
     if (isExpired(share.expiresAt)) return '⏰'
-    return '🔗'
+    return getPlatformIcon(share.sharedWith)
   }
 
   return (
@@ -106,16 +118,22 @@ function DocShareHistoryPage() {
               </div>
               <div className="history-info">
                 <h3 className="platform-name">{share.documentName}</h3>
-                <p className="contact-info">
-                  {isExpired(share.expiresAt) ? 'Expired Link' : 'Active Link'}
+                <p className="document-type">{share.documentType?.replace('_', ' ')}</p>
+                <p className="share-method">
+                  {isExpired(share.expiresAt) ? (
+                    <span className="status-badge expired-badge">⏰ Expired</span>
+                  ) : (
+                    <span className="status-badge active-badge">✓ Active</span>
+                  )}
+                  {share.sharedWith && (
+                    <span className="platform-badge">
+                      {getPlatformIcon(share.sharedWith)} {share.sharedWith}
+                    </span>
+                  )}
                 </p>
-                <p className="document-name">Type: {share.documentType?.replace('_', ' ')}</p>
-                <p className="share-date">{formatDate(share.sharedAt)}</p>
-                <p className="share-views">Views: {share.accessCount || 0}</p>
+                <p className="share-date">📅 {formatDate(share.sharedAt)}</p>
+                <p className="share-views">👁️ Views: {share.accessCount || 0}</p>
               </div>
-              {isExpired(share.expiresAt) && (
-                <div className="expired-badge">Expired</div>
-              )}
             </div>
           ))}
         </div>
