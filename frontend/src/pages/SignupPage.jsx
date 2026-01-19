@@ -41,9 +41,14 @@ function SignupPage() {
         // Store email for OTP verification
         sessionStorage.setItem('pendingEmail', formData.email)
         sessionStorage.setItem('signupEmail', formData.email)
+        sessionStorage.setItem('signupMobile', formData.mobile)
         
-        alert('Signup successful! OTP sent to your email.')
-        navigate('/otp', { state: { email: formData.email, from: 'signup' } })
+        // Show appropriate message based on what was provided
+        const message = formData.mobile 
+          ? 'Signup successful! OTP sent to your email and mobile number.'
+          : 'Signup successful! OTP sent to your email.'
+        alert(message)
+        navigate('/otp', { state: { email: formData.email, mobile: formData.mobile, from: 'signup' } })
       }
     } catch (err) {
       console.error('Signup error:', err)

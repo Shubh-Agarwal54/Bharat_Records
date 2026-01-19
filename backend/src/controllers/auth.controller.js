@@ -79,12 +79,14 @@ export const signup = async (req, res) => {
       balance: 0
     });
     
-    // Send OTP to email for verification
-    await sendOTP(email, 'signup');
+    // Send OTP to email (and SMS if mobile provided)
+    await sendOTP(email, 'signup', { mobile: user.mobile, email: user.email });
     
     res.status(201).json({
       success: true,
-      message: 'User registered successfully. OTP sent to your email.',
+      message: mobile 
+        ? 'User registered successfully. OTP sent to your email and mobile.' 
+        : 'User registered successfully. OTP sent to your email.',
       data: {
         userId: user._id,
         clientId: user.clientId,
@@ -111,20 +113,29 @@ export const signup = async (req, res) => {
   }
 };
 
-// @desc    Login user with email/password
+// @desc    Login user with email/password or mobile/password
 // @route   POST /api/auth/login
 // @access  Public
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, mobile } = req.body;
     
-    // Find user and include password
-    const user = await User.findOne({ email }).select('+password');
+    // Check if email or mobile is provided
+    if (!email && !mobile) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email or mobile number is required'
+      });
+    }
+    
+    // Find user by email or mobile
+    const query = email ? { email } : { mobile };
+    const user = await User.findOne(query).select('+password');
     
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        message: 'Invalid credentials'
       });
     }
     
@@ -134,7 +145,7 @@ export const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        message: 'Invalid credentials'
       });
     }
     
@@ -180,7 +191,7 @@ export const login = async (req, res) => {
   }
 };
 
-// @desc    Login with phone number
+// @desc    Login with phone number (OTP-based)
 // @route   POST /api/auth/phone-login
 // @access  Public
 export const phoneLogin = async (req, res) => {
@@ -196,8 +207,8 @@ export const phoneLogin = async (req, res) => {
       });
     }
     
-    // Send OTP
-    const otpResult = await sendOTP(mobile, 'login');
+    // Send OTP to mobile (and email if available)
+    const otpResult = await sendOTP(mobile, 'login', { mobile: user.mobile, email: user.email });
     
     res.json({
       status: 'success',
@@ -510,6 +521,56 @@ export const googleAuth = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message || 'Google authentication failed. Please try again.'
+    });
+  }
+};
+
+// @desc    Resend OTP
+// @route   POST /api/auth/resend-otp
+// @access  Public
+export const resendOTP = async (req, res) => {
+  try {
+    const { email, mobile } = req.body;
+    const identifier = email || mobile;
+    
+    if (!identifier) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email or mobile number is required'
+      });
+    }
+    
+    // Find user to get both email and mobile for dual OTP sending
+    const query = email ? { email } : { mobile };
+    const user = await User.findOne(query);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    
+    // Send OTP to both email and mobile if available
+    const otpResult = await sendOTP(identifier, 'verification', { 
+      mobile: user.mobile, 
+      email: user.email 
+    });
+    
+    res.json({
+      success: true,
+      message: user.mobile && user.email 
+        ? 'OTP sent to your email and mobile' 
+        : 'OTP sent successfully',
+      data: {
+        // Include OTP in development mode for testing
+        ...(process.env.NODE_ENV !== 'production' && otpResult.otp && { otp: otpResult.otp })
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to resend OTP'
     });
   }
 };

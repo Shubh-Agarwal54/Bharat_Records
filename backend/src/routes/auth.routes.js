@@ -6,7 +6,8 @@ import {
   verifyOTPAndLogin,
   refreshToken,
   logout,
-  googleAuth
+  googleAuth,
+  resendOTP
 } from '../controllers/auth.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 
@@ -16,6 +17,7 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.post('/phone-login', phoneLogin);
 router.post('/verify-otp', verifyOTPAndLogin);
+router.post('/resend-otp', resendOTP);
 router.post('/refresh-token', refreshToken);
 router.post('/logout', protect, logout);
 router.post('/google', googleAuth);
