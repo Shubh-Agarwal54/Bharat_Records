@@ -574,3 +574,103 @@ export const resendOTP = async (req, res) => {
     });
   }
 };
+
+// @desc    Forgot password - send OTP to email/mobile
+// @route   POST /api/auth/forgot-password
+// @access  Public
+export const forgotPassword = async (req, res) => {
+  try {
+    const { identifier } = req.body; // email or mobile
+
+    if (!identifier) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email or mobile number is required'
+      });
+    }
+
+    // Find user by email or mobile
+    const isEmail = identifier.includes('@');
+    const query = isEmail ? { email: identifier } : { mobile: identifier };
+    const user = await User.findOne(query);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No account found with this email or mobile number'
+      });
+    }
+
+    // Send OTP to the provided identifier (+ dual delivery if both available)
+    const otpResult = await sendOTP(identifier, 'forgot_password', {
+      mobile: user.mobile,
+      email: user.email
+    });
+
+    res.json({
+      success: true,
+      message: `OTP sent to your ${isEmail ? 'email' : 'mobile number'}`,
+      data: {
+        ...(process.env.NODE_ENV !== 'production' && otpResult.otp && { otp: otpResult.otp })
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to send OTP'
+    });
+  }
+};
+
+// @desc    Reset password using OTP
+// @route   POST /api/auth/reset-password
+// @access  Public
+export const resetPassword = async (req, res) => {
+  try {
+    const { identifier, otp, newPassword } = req.body;
+
+    if (!identifier || !otp || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Identifier, OTP and new password are required'
+      });
+    }
+
+    // Verify OTP
+    const isValid = await verifyOTP(identifier, otp);
+    if (!isValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired OTP'
+      });
+    }
+
+    // Find and update user password
+    const isEmail = identifier.includes('@');
+    const query = isEmail ? { email: identifier } : { mobile: identifier };
+    const user = await User.findOne(query).select('+password');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    user.password = newPassword;
+    if (user.security) {
+      user.security.lastPasswordChange = new Date();
+    }
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'Password reset successfully. Please login with your new password.'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to reset password'
+    });
+  }
+};

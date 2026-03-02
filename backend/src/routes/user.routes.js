@@ -4,7 +4,9 @@ import {
   getProfile,
   updateProfile,
   updateMobile,
+  verifyUpdateMobile,
   updateEmail,
+  verifyUpdateEmail,
   changePassword,
   getReferrals
 } from '../controllers/user.controller.js';
@@ -37,7 +39,9 @@ router.use(protect);
 router.get('/profile', getProfile);
 router.put('/profile', upload.single('profilePicture'), updateProfile);
 router.put('/update-mobile', updateMobile);
+router.put('/verify-update-mobile', verifyUpdateMobile);
 router.put('/update-email', updateEmail);
+router.put('/verify-update-email', verifyUpdateEmail);
 router.put('/change-password', changePassword);
 router.get('/referrals', getReferrals);
 

@@ -7,7 +7,9 @@ import {
   refreshToken,
   logout,
   googleAuth,
-  resendOTP
+  resendOTP,
+  forgotPassword,
+  resetPassword
 } from '../controllers/auth.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 
@@ -18,6 +20,8 @@ router.post('/login', login);
 router.post('/phone-login', phoneLogin);
 router.post('/verify-otp', verifyOTPAndLogin);
 router.post('/resend-otp', resendOTP);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 router.post('/refresh-token', refreshToken);
 router.post('/logout', protect, logout);
 router.post('/google', googleAuth);

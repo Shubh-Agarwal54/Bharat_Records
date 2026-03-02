@@ -265,7 +265,7 @@ function MyAccountPage() {
             />
           </div>
 
-          <button className="update-phone-btn" onClick={() => navigate('/update-phone-otp')}>Update Phone Number</button>
+          <button className="update-phone-btn" onClick={() => navigate('/update-phone-otp', { state: { type: 'mobile' } })}>Update Phone Number</button>
 
           <div className="form-row">
             <label className="form-label">Email : ✏️</label>
@@ -278,7 +278,7 @@ function MyAccountPage() {
             />
           </div>
 
-          <button className="update-email-btn" onClick={() => navigate('/update-phone-otp')}>Update Email</button>
+          <button className="update-email-btn" onClick={() => navigate('/update-phone-otp', { state: { type: 'email' } })}>Update Email</button>
         </div>
         <button 
           className="save-details-btn" 

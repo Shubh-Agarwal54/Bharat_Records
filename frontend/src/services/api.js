@@ -110,6 +110,18 @@ export const authAPI = {
     const response = await api.post('/auth/google', { credential });
     return response.data;
   },
+
+  // Forgot Password - send OTP
+  forgotPassword: async (identifier) => {
+    const response = await api.post('/auth/forgot-password', { identifier });
+    return response.data;
+  },
+
+  // Reset Password with OTP
+  resetPassword: async (identifier, otp, newPassword) => {
+    const response = await api.post('/auth/reset-password', { identifier, otp, newPassword });
+    return response.data;
+  },
 };
 
 // User APIs
@@ -130,10 +142,34 @@ export const userAPI = {
     return response.data;
   },
 
+  // Request OTP for mobile update
+  updateMobile: async (newMobile) => {
+    const response = await api.put('/users/update-mobile', { newMobile });
+    return response.data;
+  },
+
+  // Verify OTP and update mobile
+  verifyUpdateMobile: async (newMobile, otp) => {
+    const response = await api.put('/users/verify-update-mobile', { newMobile, otp });
+    return response.data;
+  },
+
+  // Request OTP for email update
+  updateEmail: async (newEmail) => {
+    const response = await api.put('/users/update-email', { newEmail });
+    return response.data;
+  },
+
+  // Verify OTP and update email
+  verifyUpdateEmail: async (newEmail, otp) => {
+    const response = await api.put('/users/verify-update-email', { newEmail, otp });
+    return response.data;
+  },
+
   // Change password
-  changePassword: async (oldPassword, newPassword) => {
+  changePassword: async (currentPassword, newPassword) => {
     const response = await api.put('/users/change-password', {
-      oldPassword,
+      currentPassword,
       newPassword,
     });
     return response.data;

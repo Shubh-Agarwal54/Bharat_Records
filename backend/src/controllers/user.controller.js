@@ -1,7 +1,7 @@
 import User from '../models/User.model.js';
 import Wallet from '../models/Wallet.model.js';
 import Document from '../models/Document.model.js';
-import { sendOTP } from '../utils/otp.utils.js';
+import { sendOTP, verifyOTP } from '../utils/otp.utils.js';
 import { uploadToS3 } from '../utils/s3.utils.js';
 
 // @desc    Get user profile
@@ -122,7 +122,7 @@ export const updateMobile = async (req, res) => {
     
     // Check if mobile already exists
     const existingUser = await User.findOne({ mobile: newMobile });
-    if (existingUser) {
+    if (existingUser && existingUser._id.toString() !== req.user._id.toString()) {
       return res.status(400).json({
         status: 'error',
         message: 'Mobile number already in use'
@@ -130,12 +130,58 @@ export const updateMobile = async (req, res) => {
     }
     
     // Send OTP to new mobile
-    await sendOTP(newMobile, 'update_mobile');
+    await sendOTP(newMobile, 'update_mobile', { mobile: newMobile });
     
     res.json({
       status: 'success',
       message: 'OTP sent to new mobile number',
       data: { newMobile }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+};
+
+// @desc    Verify OTP and update mobile
+// @route   PUT /api/users/verify-update-mobile
+// @access  Private
+export const verifyUpdateMobile = async (req, res) => {
+  try {
+    const { newMobile, otp } = req.body;
+    
+    // Verify OTP
+    const isValid = await verifyOTP(newMobile, otp);
+    if (!isValid) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid or expired OTP'
+      });
+    }
+    
+    // Check again if mobile is available
+    const existingUser = await User.findOne({ mobile: newMobile });
+    if (existingUser && existingUser._id.toString() !== req.user._id.toString()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Mobile number already in use'
+      });
+    }
+    
+    // Update mobile
+    const user = await User.findById(req.user._id);
+    user.mobile = newMobile;
+    await user.save();
+    
+    // Update localStorage user data
+    const updatedUser = user.toJSON();
+    
+    res.json({
+      status: 'success',
+      message: 'Mobile number updated successfully',
+      data: { user: updatedUser }
     });
   } catch (error) {
     res.status(500).json({
@@ -154,20 +200,66 @@ export const updateEmail = async (req, res) => {
     
     // Check if email already exists
     const existingUser = await User.findOne({ email: newEmail });
-    if (existingUser) {
+    if (existingUser && existingUser._id.toString() !== req.user._id.toString()) {
       return res.status(400).json({
         status: 'error',
         message: 'Email already in use'
       });
     }
     
-    // Send OTP to mobile for verification
-    await sendOTP(req.user.mobile, 'update_email');
+    // Send OTP to new email
+    await sendOTP(newEmail, 'update_email', { email: newEmail });
     
     res.json({
       status: 'success',
-      message: 'OTP sent for verification',
+      message: 'OTP sent to new email address',
       data: { newEmail }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+};
+
+// @desc    Verify OTP and update email
+// @route   PUT /api/users/verify-update-email
+// @access  Private
+export const verifyUpdateEmail = async (req, res) => {
+  try {
+    const { newEmail, otp } = req.body;
+    
+    // Verify OTP
+    const isValid = await verifyOTP(newEmail, otp);
+    if (!isValid) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid or expired OTP'
+      });
+    }
+    
+    // Check again if email is available
+    const existingUser = await User.findOne({ email: newEmail });
+    if (existingUser && existingUser._id.toString() !== req.user._id.toString()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Email already in use'
+      });
+    }
+    
+    // Update email
+    const user = await User.findById(req.user._id);
+    user.email = newEmail;
+    await user.save();
+    
+    // Update localStorage user data
+    const updatedUser = user.toJSON();
+    
+    res.json({
+      status: 'success',
+      message: 'Email updated successfully',
+      data: { user: updatedUser }
     });
   } catch (error) {
     res.status(500).json({
