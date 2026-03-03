@@ -221,6 +221,64 @@ export const biometricAPI = {
   }
 };
 
+// Admin APIs (uses separate token stored as adminToken)
+const adminApi = axios.create({
+  baseURL: API_BASE_URL,
+  headers: { 'Content-Type': 'application/json' }
+});
+adminApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem('adminToken');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+export const adminAPI = {
+  login: async (email, password) => {
+    const response = await adminApi.post('/admin/login', { email, password });
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await adminApi.get('/admin/stats');
+    return response.data;
+  },
+  getUsers: async (params) => {
+    const response = await adminApi.get('/admin/users', { params });
+    return response.data;
+  },
+  getUserDetail: async (id) => {
+    const response = await adminApi.get(`/admin/users/${id}`);
+    return response.data;
+  },
+  toggleUserStatus: async (id) => {
+    const response = await adminApi.put(`/admin/users/${id}/toggle-status`);
+    return response.data;
+  },
+  updateUserSubscription: async (id, plan, expiry) => {
+    const response = await adminApi.put(`/admin/users/${id}/subscription`, { plan, expiry });
+    return response.data;
+  },
+  deleteUser: async (id) => {
+    const response = await adminApi.delete(`/admin/users/${id}`);
+    return response.data;
+  },
+  getDocuments: async (params) => {
+    const response = await adminApi.get('/admin/documents', { params });
+    return response.data;
+  },
+  deleteDocument: async (id) => {
+    const response = await adminApi.delete(`/admin/documents/${id}`);
+    return response.data;
+  },
+  getTransactions: async (params) => {
+    const response = await adminApi.get('/admin/transactions', { params });
+    return response.data;
+  },
+  getWallets: async (params) => {
+    const response = await adminApi.get('/admin/wallets', { params });
+    return response.data;
+  }
+};
+
 // Document APIs
 export const documentAPI = {
   // Upload document

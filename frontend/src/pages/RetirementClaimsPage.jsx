@@ -34,11 +34,11 @@ function RetirementClaimsPage() {
       type: 'text',
       placeholder: 'Employer Contact Details (Optional)'
     },
-    {
-      name: 'addNominee',
-      type: 'checkbox',
-      label: 'Add Nominee'
-    },
+    // {
+    //   name: 'addNominee',
+    //   type: 'checkbox',
+    //   label: 'Add Nominee'
+    // },
     {
       name: 'remarks',
       type: 'textarea',

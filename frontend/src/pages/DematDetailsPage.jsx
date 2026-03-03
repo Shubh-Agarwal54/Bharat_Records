@@ -28,11 +28,11 @@ function DematDetailsPage() {
       type: 'checkbox',
       label: 'Mobile Number linked with Demat'
     },
-    {
-      name: 'addNominee',
-      type: 'checkbox',
-      label: 'Add Nominee'
-    },
+    // {
+    //   name: 'addNominee',
+    //   type: 'checkbox',
+    //   label: 'Add Nominee'
+    // },
     {
       name: 'remarks',
       type: 'textarea',

@@ -56,6 +56,13 @@ import AddTaskPage from './pages/AddTaskPage'
 import MyNomineesPage from './pages/MyNomineesPage'
 import NomineeAccessPage from './pages/NomineeAccessPage'
 import AcceptNomineeInvitePage from './pages/AcceptNomineeInvitePage'
+import AdminLoginPage from './pages/admin/AdminLoginPage'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminUsersPage from './pages/admin/AdminUsersPage'
+import AdminDocumentsPage from './pages/admin/AdminDocumentsPage'
+import AdminTransactionsPage from './pages/admin/AdminTransactionsPage'
+import AdminWalletsPage from './pages/admin/AdminWalletsPage'
 
 function App() {
   const [biometricLocked, setBiometricLocked] = useState(false)
@@ -145,6 +152,15 @@ function App() {
         <Route path="/my-nominees" element={<MyNomineesPage />} />
         <Route path="/nominee-access" element={<NomineeAccessPage />} />
         <Route path="/nominee-invite/:token" element={<AcceptNomineeInvitePage />} />
+        {/* Admin Panel */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="documents" element={<AdminDocumentsPage />} />
+          <Route path="transactions" element={<AdminTransactionsPage />} />
+          <Route path="wallets" element={<AdminWalletsPage />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
