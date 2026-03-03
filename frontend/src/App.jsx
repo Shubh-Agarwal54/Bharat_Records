@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import BiometricLockScreen from './components/BiometricLockScreen'
 import SplashScreen from './pages/SplashScreen'
 import LoginPage from './pages/LoginPage'
 import PhoneLoginPage from './pages/PhoneLoginPage'
@@ -6,9 +8,9 @@ import OTPPage from './pages/OTPPage'
 import SignupPage from './pages/SignupPage'
 import HomePage from './pages/HomePage'
 import WalletPage from './pages/WalletPage'
-import AddMoneyPage from './pages/AddMoneyPage'
 import TransferMoneyPage from './pages/TransferMoneyPage'
 import WithdrawMoneyPage from './pages/WithdrawMoneyPage'
+import AddMoneyPage from './pages/AddMoneyPage'
 import AddDocumentPage from './pages/AddDocumentPage'
 import PersonalPage from './pages/PersonalPage'
 import PanCardPage from './pages/PanCardPage'
@@ -54,9 +56,37 @@ import AddTaskPage from './pages/AddTaskPage'
 import MyNomineesPage from './pages/MyNomineesPage'
 import NomineeAccessPage from './pages/NomineeAccessPage'
 import AcceptNomineeInvitePage from './pages/AcceptNomineeInvitePage'
-import { useEffect } from 'react'
 
 function App() {
+  const [biometricLocked, setBiometricLocked] = useState(false)
+  const [biometricChecked, setBiometricChecked] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    const enabled = localStorage.getItem('biometricEnabled') === 'true'
+    if (token && enabled) {
+      setBiometricLocked(true)
+    }
+    setBiometricChecked(true)
+  }, [])
+
+  if (!biometricChecked) return null
+
+  if (biometricLocked) {
+    return (
+      <BiometricLockScreen
+        onUnlock={() => setBiometricLocked(false)}
+        onSkip={() => {
+          // Clear session and go to login
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+          setBiometricLocked(false)
+          window.location.href = '/login'
+        }}
+      />
+    )
+  }
+
   return (
     <BrowserRouter>
       <Routes>

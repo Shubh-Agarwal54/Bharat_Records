@@ -1,0 +1,95 @@
+.bls-overlay {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bls-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 28px;
+  width: 100%;
+  max-width: 380px;
+  gap: 16px;
+  text-align: center;
+}
+
+.bls-logo {
+  max-width: 180px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.bls-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #3D1F8F;
+  margin: 0;
+}
+
+.bls-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.bls-icon-wrap {
+  margin: 16px 0;
+  transition: all 0.3s ease;
+}
+
+@keyframes bls-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.75; }
+}
+
+.bls-icon-pulse {
+  animation: bls-pulse 1.2s ease-in-out infinite;
+}
+
+.bls-status-text {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.bls-scanning {
+  color: #3D1F8F;
+}
+
+.bls-err {
+  color: #E53935;
+}
+
+.bls-btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3D1F8F, #5e35b1);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.bls-btn-primary:active {
+  opacity: 0.85;
+}
+
+.bls-btn-skip {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: underline;
+}

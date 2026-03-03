@@ -186,3 +186,132 @@
   padding: 0;
   
 }
+
+/* Forgot password overlay */
+.lp-fp-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.lp-fp-modal {
+  background-color: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 36px 24px 32px;
+  width: 100%;
+  max-width: 428px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lp-fp-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lp-fp-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a2e;
+  text-align: center;
+  margin: 0;
+}
+
+.lp-fp-subtitle {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin: 0;
+}
+
+.lp-fp-input {
+  margin: 0;
+}
+
+.lp-fp-error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.lp-fp-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.lp-fp-otp-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lp-fp-otp-box {
+  width: 46px;
+  height: 50px;
+  border: 2px solid #1565C0;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  color: #1a1a2e;
+}
+
+.lp-fp-otp-box:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15);
+}
+
+.lp-fp-otp-box:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.lp-fp-btn {
+  margin: 0;
+}
+
+.lp-fp-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.lp-fp-resend {
+  text-align: center;
+  display: block;
+  width: 100%;
+  color: #1565C0;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.lp-fp-resend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

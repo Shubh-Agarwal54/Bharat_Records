@@ -22,6 +22,7 @@
     "@aws-sdk/client-sns": "^3.943.0",
     "@aws-sdk/s3-request-presigner": "^3.450.0",
     "@react-oauth/google": "^0.13.4",
+    "@simplewebauthn/server": "^13.2.3",
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

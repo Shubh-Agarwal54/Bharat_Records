@@ -108,6 +108,15 @@ const userSchema = new mongoose.Schema({
       type: Date
     }
   },
+  webauthnCredentials: [{
+    id: { type: String, required: true },
+    publicKey: { type: Buffer, required: true },
+    counter: { type: Number, default: 0 },
+    deviceType: { type: String },
+    backedUp: { type: Boolean, default: false },
+    transports: [{ type: String }],
+    createdAt: { type: Date, default: Date.now }
+  }],
   loginHistory: [{
     timestamp: Date,
     ipAddress: String,

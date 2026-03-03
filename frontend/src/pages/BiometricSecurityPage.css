@@ -93,3 +93,48 @@
 .disable-button:hover {
   background-color: #D32F2F;
 }
+
+/* Status badge - unique prefix bms- to avoid collisions */
+.bms-status-badge {
+  font-size: 15px;
+  font-weight: 600;
+  margin: -8px 0 4px;
+}
+
+.bms-badge-on {
+  color: #2e7d32;
+}
+
+.bms-badge-off {
+  color: #c62828;
+}
+
+.bms-error {
+  width: 100%;
+  max-width: 360px;
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.bms-success {
+  width: 100%;
+  max-width: 360px;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.enable-button:disabled,
+.disable-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

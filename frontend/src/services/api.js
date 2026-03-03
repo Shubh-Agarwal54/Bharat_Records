@@ -182,6 +182,45 @@ export const userAPI = {
   },
 };
 
+// Biometric / WebAuthn APIs
+export const biometricAPI = {
+  // Get status
+  getStatus: async () => {
+    const response = await api.get('/biometric/status');
+    return response.data;
+  },
+
+  // Get registration options (starts enroll flow)
+  getRegistrationOptions: async () => {
+    const response = await api.get('/biometric/register-options');
+    return response.data;
+  },
+
+  // Verify registration and save credential
+  verifyRegistration: async (registrationResponse) => {
+    const response = await api.post('/biometric/register-verify', registrationResponse);
+    return response.data;
+  },
+
+  // Get authentication options (pass userId for unauthenticated flow)
+  getAuthOptions: async (userId) => {
+    const response = await api.post('/biometric/auth-options', { userId });
+    return response.data;
+  },
+
+  // Verify authentication
+  verifyAuthentication: async (userId, authResponse) => {
+    const response = await api.post('/biometric/auth-verify', { userId, ...authResponse });
+    return response.data;
+  },
+
+  // Disable biometric
+  disable: async () => {
+    const response = await api.delete('/biometric/disable');
+    return response.data;
+  }
+};
+
 // Document APIs
 export const documentAPI = {
   // Upload document

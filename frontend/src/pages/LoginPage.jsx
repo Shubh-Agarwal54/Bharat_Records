@@ -14,6 +14,17 @@ function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Forgot password overlay
+  const [showForgot, setShowForgot] = useState(false)
+  const [forgotStep, setForgotStep] = useState(1) // 1: identifier, 2: OTP + new password
+  const [forgotIdentifier, setForgotIdentifier] = useState('')
+  const [forgotOtp, setForgotOtp] = useState(['', '', '', '', '', ''])
+  const [forgotNewPass, setForgotNewPass] = useState('')
+  const [forgotConfirmPass, setForgotConfirmPass] = useState('')
+  const [forgotLoading, setForgotLoading] = useState(false)
+  const [forgotError, setForgotError] = useState('')
+  const [forgotSuccess, setForgotSuccess] = useState('')
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -65,6 +76,73 @@ function LoginPage() {
 
   const handleGoogleError = () => {
     setError('Google login failed. Please try again.')
+  }
+
+  const closeForgot = () => {
+    setShowForgot(false)
+    setForgotStep(1)
+    setForgotIdentifier('')
+    setForgotOtp(['', '', '', '', '', ''])
+    setForgotNewPass('')
+    setForgotConfirmPass('')
+    setForgotError('')
+    setForgotSuccess('')
+  }
+
+  const handleForgotSendOTP = async () => {
+    setForgotError('')
+    if (!forgotIdentifier.trim()) {
+      setForgotError('Please enter your registered email or mobile number')
+      return
+    }
+    setForgotLoading(true)
+    try {
+      await authAPI.forgotPassword(forgotIdentifier.trim())
+      setForgotSuccess('OTP sent! Check your email or mobile.')
+      setForgotStep(2)
+    } catch (err) {
+      setForgotError(err.response?.data?.message || 'Failed to send OTP. Please try again.')
+    } finally {
+      setForgotLoading(false)
+    }
+  }
+
+  const handleOtpChange = (index, value) => {
+    if (value.length <= 1 && /^\d*$/.test(value)) {
+      const digits = [...forgotOtp]
+      digits[index] = value
+      setForgotOtp(digits)
+      if (value && index < 5) {
+        document.getElementById(`lg-otp-${index + 1}`)?.focus()
+      }
+    }
+  }
+
+  const handleForgotReset = async () => {
+    setForgotError('')
+    const otp = forgotOtp.join('')
+    if (otp.length !== 6) {
+      setForgotError('Please enter the complete 6-digit OTP')
+      return
+    }
+    if (!forgotNewPass || forgotNewPass.length < 6) {
+      setForgotError('New password must be at least 6 characters')
+      return
+    }
+    if (forgotNewPass !== forgotConfirmPass) {
+      setForgotError('Passwords do not match')
+      return
+    }
+    setForgotLoading(true)
+    try {
+      await authAPI.resetPassword(forgotIdentifier.trim(), otp, forgotNewPass)
+      setForgotSuccess('Password reset successfully!')
+      setTimeout(() => closeForgot(), 1500)
+    } catch (err) {
+      setForgotError(err.response?.data?.message || 'Invalid OTP. Please try again.')
+    } finally {
+      setForgotLoading(false)
+    }
   }
 
   return (
@@ -120,7 +198,7 @@ function LoginPage() {
           </div>
         </div>
 
-        <a href="#" className="forgot-password">Forgot Password</a>
+        <a href="#" className="forgot-password" onClick={(e) => { e.preventDefault(); setShowForgot(true) }}>Forgot Password</a>
 
         <button type="submit" className="btn-primary" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
@@ -157,6 +235,92 @@ function LoginPage() {
         <button onClick={() => navigate('/signup')} className="link-button">Signup</button>
       </div>
     </div>
+
+      {/* Forgot Password Overlay */}
+      {showForgot && (
+        <div className="lp-fp-overlay">
+          <div className="lp-fp-modal">
+            <button className="lp-fp-close" onClick={closeForgot}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#333" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+
+            {forgotStep === 1 ? (
+              <>
+                <h2 className="lp-fp-title">Forgot Password</h2>
+                <p className="lp-fp-subtitle">Enter your registered email or mobile number</p>
+
+                {forgotError && <div className="lp-fp-error">{forgotError}</div>}
+
+                <input
+                  type="text"
+                  placeholder="Email or mobile number"
+                  value={forgotIdentifier}
+                  onChange={(e) => setForgotIdentifier(e.target.value)}
+                  className="form-input lp-fp-input"
+                  disabled={forgotLoading}
+                  onKeyPress={(e) => e.key === 'Enter' && handleForgotSendOTP()}
+                />
+
+                <button className="btn-primary lp-fp-btn" onClick={handleForgotSendOTP} disabled={forgotLoading}>
+                  {forgotLoading ? 'Sending OTP...' : 'Send OTP'}
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className="lp-fp-title">Reset Password</h2>
+                <p className="lp-fp-subtitle">OTP sent to your {forgotIdentifier.includes('@') ? 'email' : 'mobile'}</p>
+
+                {forgotError && <div className="lp-fp-error">{forgotError}</div>}
+                {forgotSuccess && <div className="lp-fp-success">{forgotSuccess}</div>}
+
+                <div className="lp-fp-otp-row">
+                  {forgotOtp.map((d, i) => (
+                    <input
+                      key={i}
+                      id={`lg-otp-${i}`}
+                      type="text"
+                      maxLength="1"
+                      value={d}
+                      onChange={(e) => handleOtpChange(i, e.target.value)}
+                      className="lp-fp-otp-box"
+                      inputMode="numeric"
+                      disabled={forgotLoading}
+                    />
+                  ))}
+                </div>
+
+                <input
+                  type="password"
+                  placeholder="New password"
+                  value={forgotNewPass}
+                  onChange={(e) => setForgotNewPass(e.target.value)}
+                  className="form-input lp-fp-input"
+                  disabled={forgotLoading}
+                />
+
+                <input
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={forgotConfirmPass}
+                  onChange={(e) => setForgotConfirmPass(e.target.value)}
+                  className="form-input lp-fp-input"
+                  disabled={forgotLoading}
+                />
+
+                <button className="btn-primary lp-fp-btn" onClick={handleForgotReset} disabled={forgotLoading}>
+                  {forgotLoading ? 'Resetting...' : 'Reset Password'}
+                </button>
+
+                <button className="forgot-password lp-fp-resend" onClick={handleForgotSendOTP} disabled={forgotLoading}>
+                  Resend OTP
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </GoogleOAuthProvider>
   )
 }
