@@ -7,7 +7,7 @@ import {
 import User from '../models/User.model.js';
 
 const RP_NAME = process.env.RP_NAME || 'Bharat Records';
-const RP_ID = process.env.RP_ID || 'localhost' || 'bharatrecords.qzz.io';
+const RP_ID = process.env.RP_ID || 'localhost' || 'www.bharatrecords.qzz.io';
 const ORIGIN = process.env.CLIENT_URL || 'http://localhost:5173';
 
 // In-memory challenge store (use Redis in production)
