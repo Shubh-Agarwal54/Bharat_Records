@@ -87,7 +87,7 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className="adm-sidebar">
         <div className="adm-sidebar-logo">
-          <div style={{ fontSize: 20, color: '#fff', fontWeight: 800, letterSpacing: 1 }}>
+          <div style={{ fontSize: 20, color: '#fff', fontWeight: 600,fontFamily:'sans-serif', letterSpacing: 1 }}>
             🛡️ Bharat Records
           </div>
           <div className="adm-sidebar-title">Admin Panel</div>
