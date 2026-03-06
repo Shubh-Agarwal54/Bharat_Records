@@ -77,9 +77,14 @@
   font-weight: 700;
   color: var(--primary-purple);
   margin-bottom: var(--spacing-xs);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Allow long file names to wrap/break gracefully */
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+
 }
 
 .document-type {

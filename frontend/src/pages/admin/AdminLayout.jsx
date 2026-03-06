@@ -52,6 +52,19 @@ const NavIcon = ({ type }) => {
         <line x1="12" y1="17" x2="12.01" y2="17" />
       </svg>
     ),
+    banners: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <line x1="2" y1="10" x2="22" y2="10" />
+      </svg>
+    ),
+    roles: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        <polyline points="16 11 18 13 22 9" />
+      </svg>
+    ),
   };
   return <span className="adm-nav-icon">{icons[type]}</span>;
 };
@@ -72,6 +85,14 @@ export default function AdminLayout() {
     } catch (_) {}
   }, [navigate]);
 
+  // Returns true if this admin can VIEW a given section.
+  // Master admins (User model – no permissions field) always have full access.
+  const canView = (section) => {
+    if (!adminUser) return false;
+    if (!adminUser.permissions) return true; // master admin: full access
+    return !!adminUser.permissions?.[section]?.view;
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
@@ -85,6 +106,8 @@ export default function AdminLayout() {
     '/admin/transactions': 'Transactions',
     '/admin/wallets': 'Wallets',
     '/admin/help': 'Help Queries',
+    '/admin/banners': 'Banner Management',
+    '/admin/roles': 'Roles & Permissions',
   };
 
   const currentPath = window.location.pathname;
@@ -102,43 +125,71 @@ export default function AdminLayout() {
         </div>
 
         <nav className="adm-nav">
-          <NavLink
-            to="/admin"
-            end
-            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
-          >
-            <NavIcon type="dashboard" /> Dashboard
-          </NavLink>
-          <NavLink
-            to="/admin/users"
-            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
-          >
-            <NavIcon type="users" /> Users
-          </NavLink>
-          <NavLink
-            to="/admin/documents"
-            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
-          >
-            <NavIcon type="documents" /> Documents
-          </NavLink>
-          <NavLink
-            to="/admin/transactions"
-            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
-          >
-            <NavIcon type="transactions" /> Transactions
-          </NavLink>
-          <NavLink
-            to="/admin/wallets"
-            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
-          >
-            <NavIcon type="wallets" /> Wallets
-          </NavLink>
-          <NavLink
-            to="/admin/help"
-            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
-          >
-            <NavIcon type="help" /> Help Queries
-          </NavLink>
+          {canView('dashboard') && (
+            <NavLink
+              to="/admin"
+              end
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="dashboard" /> Dashboard
+            </NavLink>
+          )}
+          {canView('users') && (
+            <NavLink
+              to="/admin/users"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="users" /> Users
+            </NavLink>
+          )}
+          {canView('documents') && (
+            <NavLink
+              to="/admin/documents"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="documents" /> Documents
+            </NavLink>
+          )}
+          {canView('transactions') && (
+            <NavLink
+              to="/admin/transactions"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="transactions" /> Transactions
+            </NavLink>
+          )}
+          {canView('wallets') && (
+            <NavLink
+              to="/admin/wallets"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="wallets" /> Wallets
+            </NavLink>
+          )}
+          {canView('helpQueries') && (
+            <NavLink
+              to="/admin/help"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="help" /> Help Queries
+            </NavLink>
+          )}
+          {canView('banners') && (
+            <NavLink
+              to="/admin/banners"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="banners" /> Banners
+            </NavLink>
+          )}
+          {canView('adminRoles') && (
+            <NavLink
+              to="/admin/roles"
+              className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+            >
+              <NavIcon type="roles" /> Roles & Permissions
+            </NavLink>
+          )}
         </nav>
 
         <div className="adm-sidebar-footer">

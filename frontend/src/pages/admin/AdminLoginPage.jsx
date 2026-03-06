@@ -25,13 +25,25 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await adminAPI.login(email.trim(), password);
-      const payload = res.data.data || res.data;
+      let payload;
+      try {
+        // Path A: master admin (User model)
+        const res = await adminAPI.login(email.trim(), password);
+        payload = res.data?.data || res.data;
+      } catch (masterErr) {
+        if (masterErr.response?.status === 401) {
+          // Path B: sub-admin / AdminAccount model
+          const res = await adminAPI.subAdminLogin(email.trim(), password);
+          payload = res.data?.data || res.data || res;
+        } else {
+          throw masterErr;
+        }
+      }
       localStorage.setItem('adminToken', payload.token);
-      localStorage.setItem('adminUser', JSON.stringify(payload.admin || {}));
+      localStorage.setItem('adminUser', JSON.stringify(payload.admin || payload.account || {}));
       navigate('/admin', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Check credentials.');
+      setError(err.response?.data?.message || 'Invalid admin credentials');
     } finally {
       setLoading(false);
     }

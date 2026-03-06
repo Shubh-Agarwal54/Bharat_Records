@@ -64,6 +64,8 @@ import AdminDocumentsPage from './pages/admin/AdminDocumentsPage'
 import AdminTransactionsPage from './pages/admin/AdminTransactionsPage'
 import AdminWalletsPage from './pages/admin/AdminWalletsPage'
 import AdminHelpPage from './pages/admin/AdminHelpPage'
+import AdminBannersPage from './pages/admin/AdminBannersPage'
+import AdminRolesPage from './pages/admin/AdminRolesPage'
 
 function App() {
   const [biometricLocked, setBiometricLocked] = useState(false)
@@ -162,6 +164,8 @@ function App() {
           <Route path="transactions" element={<AdminTransactionsPage />} />
           <Route path="wallets" element={<AdminWalletsPage />} />
           <Route path="help" element={<AdminHelpPage />} />
+          <Route path="banners" element={<AdminBannersPage />} />
+          <Route path="roles" element={<AdminRolesPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

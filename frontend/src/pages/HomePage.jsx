@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './HomePage.css'
 import BottomNav from '../components/BottomNav'
+import { bannerAPI } from '../services/api'
 
 function HomePage() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
+  const [banners, setBanners] = useState([])
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const slideTimer = useRef(null)
 
   useEffect(() => {
     // Get user data from localStorage
@@ -14,6 +18,25 @@ function HomePage() {
       setUser(JSON.parse(userData))
     }
   }, [])
+
+  // Fetch active banners
+  useEffect(() => {
+    bannerAPI.getActive()
+      .then(res => {
+        if (res.data && res.data.length > 0) setBanners(res.data)
+      })
+      .catch(() => {}) // silently fall back to static image
+  }, [])
+
+  // Auto-advance slider every 4 s
+  useEffect(() => {
+    const total = banners.length || 1
+    if (total <= 1) return
+    slideTimer.current = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % total)
+    }, 4000)
+    return () => clearInterval(slideTimer.current)
+  }, [banners])
 
   const categories = [
     { id: 1, name: 'Personal Information', desc: 'Store your Aadhar, PAN, Passport, Voter, DL, etc', color: '#FDB913', icon: '👤', path: '/personal' },
@@ -92,7 +115,7 @@ function HomePage() {
       <div className="categories-section">
         <div className="section-header">
           <h3>Categories</h3>
-          <button className="see-all">See All</button>
+          <button className="see-all" onClick={() => navigate('/add-document')}>See All</button>
         </div>
 
         <div className="categories-grid">
@@ -115,17 +138,83 @@ function HomePage() {
 
       <div className="whats-new-section">
         <h3>What's new</h3>
-        <div className="news-banner">
-          <div className="news-illustration">
-            <img src="/Homebottom.jpg" className='news-text' alt="News" />
-          </div>
-          {/* <div className="news-text">
-            <h4>THE BEST</h4>
-            <h4>CHOICE FOR</h4>
-            <h4><span className="highlight-storing">STORING</span></h4>
-            <h4><span className="highlight-your">YOUR</span></h4>
-            <h4><span className="highlight-valuables">VALUABLES</span></h4>
-          </div> */}
+        <div className="news-banner" style={{ position: 'relative', overflow: 'hidden' }}>
+          {/* ── Banner Slider ── */}
+          {banners.length === 0 ? (
+            /* Fallback: original static image */
+            <div className="news-illustration">
+              <img src="/Homebottom.jpg" className="news-text" alt="News" />
+            </div>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  transition: 'transform 0.5s ease',
+                  transform: `translateX(-${currentSlide * 100}%)`,
+                  willChange: 'transform'
+                }}
+              >
+                {banners.map((b, i) => (
+                  <div
+                    key={b._id}
+                    style={{ minWidth: '100%', flexShrink: 0 }}
+                    onClick={() => b.linkUrl && window.open(b.linkUrl, '_blank')}
+                  >
+                    <img
+                      src={b.imageUrl}
+                      alt={b.title || `Banner ${i + 1}`}
+                      style={{
+                        width: '100%',
+                        height: '160px',
+                        objectFit: 'cover',
+                        display: 'block',
+                        borderRadius: '12px',
+                        cursor: b.linkUrl ? 'pointer' : 'default'
+                      }}
+                      onError={e => { e.target.src = '/Homebottom.jpg'; }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Dot indicators */}
+              {banners.length > 1 && (
+                <div style={{
+                  position: 'absolute',
+                  left: '50%',
+                  bottom: 8,
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  gap: 6,
+                  zIndex: 30,
+                  padding: '4px 8px',
+                  alignItems: 'center'
+                }}>
+                  {banners.map((_, i) => (
+                    <button
+                      key={i}
+                      aria-label={`Go to slide ${i + 1}`}
+                      onClick={() => {
+                        clearInterval(slideTimer.current)
+                        setCurrentSlide(i)
+                      }}
+                      style={{
+                        width: i === currentSlide ? 20 : 8,
+                        height: 8,
+                        borderRadius: 4,
+                        border: 'none',
+                        background: i === currentSlide ? '#3D1F8F' : '#ccc',
+                        cursor: 'pointer',
+                        padding: 0,
+                        transition: 'width 0.3s, background 0.3s'
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
 

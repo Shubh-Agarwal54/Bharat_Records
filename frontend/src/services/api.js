@@ -293,6 +293,67 @@ export const adminAPI = {
     const response = await adminApi.delete(`/admin/help-queries/${id}`);
     return response.data;
   },
+  // Banner management
+  getAllBanners: async () => {
+    const response = await adminApi.get('/admin/banners');
+    return response.data;
+  },
+  createBanner: async (formData) => {
+    const response = await adminApi.post('/admin/banners', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  },
+  toggleBanner: async (id) => {
+    const response = await adminApi.put(`/admin/banners/${id}/toggle`);
+    return response.data;
+  },
+  updateBannerOrder: async (id, order) => {
+    const response = await adminApi.put(`/admin/banners/${id}/order`, { order });
+    return response.data;
+  },
+  deleteBanner: async (id) => {
+    const response = await adminApi.delete(`/admin/banners/${id}`);
+    return response.data;
+  },
+  // Admin Accounts (Roles & Permissions)
+  getAdminAccounts: async () => {
+    const response = await adminApi.get('/admin/admin-accounts');
+    return response.data;
+  },
+  createAdminAccount: async (data) => {
+    const response = await adminApi.post('/admin/admin-accounts', data);
+    return response.data;
+  },
+  updateAdminAccount: async (id, data) => {
+    const response = await adminApi.put(`/admin/admin-accounts/${id}`, data);
+    return response.data;
+  },
+  toggleAdminAccount: async (id) => {
+    const response = await adminApi.put(`/admin/admin-accounts/${id}/toggle`);
+    return response.data;
+  },
+  resetAdminAccountPassword: async (id, newPassword) => {
+    const response = await adminApi.put(`/admin/admin-accounts/${id}/reset-password`, { newPassword });
+    return response.data;
+  },
+  deleteAdminAccount: async (id) => {
+    const response = await adminApi.delete(`/admin/admin-accounts/${id}`);
+    return response.data;
+  },
+  // Sub-admin login (public endpoint – uses plain axios, no auth token required)
+  subAdminLogin: async (email, password) => {
+    const response = await axios.post(`${API_BASE_URL}/admin/admin-accounts/login`, { email, password });
+    return response.data;
+  },
+};
+
+// Banner API (public – no auth)
+export const bannerAPI = {
+  getActive: async () => {
+    const response = await axios.get(`${API_BASE_URL}/banners`);
+    return response.data;
+  },
 };
 
 // Help Center API (user-facing)
