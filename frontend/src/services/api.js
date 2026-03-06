@@ -269,6 +269,10 @@ export const adminAPI = {
     const response = await adminApi.delete(`/admin/documents/${id}`);
     return response.data;
   },
+  getDocumentSignedUrl: async (id) => {
+    const response = await adminApi.get(`/admin/documents/${id}/signed-url`);
+    return response.data;
+  },
   getTransactions: async (params) => {
     const response = await adminApi.get('/admin/transactions', { params });
     return response.data;
@@ -276,7 +280,27 @@ export const adminAPI = {
   getWallets: async (params) => {
     const response = await adminApi.get('/admin/wallets', { params });
     return response.data;
-  }
+  },
+  getHelpQueries: async (params) => {
+    const response = await adminApi.get('/admin/help-queries', { params });
+    return response.data;
+  },
+  updateHelpQuery: async (id, data) => {
+    const response = await adminApi.put(`/admin/help-queries/${id}`, data);
+    return response.data;
+  },
+  deleteHelpQuery: async (id) => {
+    const response = await adminApi.delete(`/admin/help-queries/${id}`);
+    return response.data;
+  },
+};
+
+// Help Center API (user-facing)
+export const helpAPI = {
+  submit: async (data) => {
+    const response = await api.post('/help/submit', data);
+    return response.data;
+  },
 };
 
 // Document APIs

@@ -10,9 +10,13 @@ import {
   updateUserSubscription,
   deleteUser,
   getAllDocuments,
+  getDocumentSignedUrl,
   deleteDocument,
   getAllTransactions,
-  getAllWallets
+  getAllWallets,
+  getAllHelpQueries,
+  updateHelpQueryStatus,
+  deleteHelpQuery
 } from '../controllers/admin.controller.js';
 
 const router = express.Router();
@@ -52,10 +56,15 @@ router.put('/users/:id/subscription', adminProtect, updateUserSubscription);
 router.delete('/users/:id', adminProtect, deleteUser);
 
 router.get('/documents', adminProtect, getAllDocuments);
+router.get('/documents/:id/signed-url', adminProtect, getDocumentSignedUrl);
 router.delete('/documents/:id', adminProtect, deleteDocument);
 
 router.get('/transactions', adminProtect, getAllTransactions);
 
 router.get('/wallets', adminProtect, getAllWallets);
+
+router.get('/help-queries', adminProtect, getAllHelpQueries);
+router.put('/help-queries/:id', adminProtect, updateHelpQueryStatus);
+router.delete('/help-queries/:id', adminProtect, deleteHelpQuery);
 
 export default router;

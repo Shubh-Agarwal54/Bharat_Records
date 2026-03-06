@@ -39,6 +39,25 @@ export default function AdminDocumentsPage() {
 
   useEffect(() => { loadDocs(1); }, [loadDocs]);
 
+  const [viewingId, setViewingId] = useState(null);
+
+  const handleView = async (doc) => {
+    setViewingId(doc._id);
+    try {
+      const res = await adminAPI.getDocumentSignedUrl(doc._id);
+      const url = res.data?.url;
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        alert('Could not get signed URL.');
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to open document.');
+    } finally {
+      setViewingId(null);
+    }
+  };
+
   const handleDelete = async (docId) => {
     if (!window.confirm('Delete this document? This cannot be undone.')) return;
     try {
@@ -118,17 +137,13 @@ export default function AdminDocumentsPage() {
                   <td style={{ fontSize: 12 }}>{fmtDate(doc.createdAt)}</td>
                   <td>
                     <div style={{ display: 'flex', gap: 6 }}>
-                      {doc.fileUrl && (
-                        <a
-                          href={doc.fileUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="adm-btn adm-btn-outline adm-btn-sm"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          View
-                        </a>
-                      )}
+                      <button
+                        className="adm-btn adm-btn-outline adm-btn-sm"
+                        onClick={() => handleView(doc)}
+                        disabled={viewingId === doc._id}
+                      >
+                        {viewingId === doc._id ? '…' : 'View'}
+                      </button>
                       <button className="adm-btn adm-btn-danger adm-btn-sm" onClick={() => handleDelete(doc._id)}>
                         Delete
                       </button>

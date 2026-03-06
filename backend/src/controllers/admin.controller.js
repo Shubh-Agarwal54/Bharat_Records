@@ -2,7 +2,9 @@ import User from '../models/User.model.js';
 import Document from '../models/Document.model.js';
 import Transaction from '../models/Transaction.model.js';
 import Wallet from '../models/Wallet.model.js';
+import HelpQuery from '../models/HelpQuery.model.js';
 import jwt from 'jsonwebtoken';
+import { getSignedUrl } from '../utils/s3.utils.js';
 
 // ─── Auth ────────────────────────────────────
 // @route POST /api/admin/login
@@ -236,6 +238,20 @@ export const getAllDocuments = async (req, res) => {
   }
 };
 
+// @route GET /api/admin/documents/:id/signed-url
+export const getDocumentSignedUrl = async (req, res) => {
+  try {
+    const doc = await Document.findById(req.params.id);
+    if (!doc) return res.status(404).json({ success: false, message: 'Document not found' });
+    if (!doc.s3Key) return res.status(400).json({ success: false, message: 'No S3 key for this document' });
+
+    const signedUrl = await getSignedUrl(doc.s3Key, 300); // 5-minute expiry
+    res.json({ success: true, data: { url: signedUrl } });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 // @route DELETE /api/admin/documents/:id
 export const deleteDocument = async (req, res) => {
   try {
@@ -303,6 +319,69 @@ export const getAllWallets = async (req, res) => {
     ]);
 
     res.json({ success: true, data: { wallets, total, page: Number(page), pages: Math.ceil(total / limit) } });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// ─── Help Queries ─────────────────────────────
+// @route GET /api/admin/help-queries
+export const getAllHelpQueries = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, status, search = '' } = req.query;
+    const skip = (page - 1) * limit;
+
+    const query = {};
+    if (status) query.status = status;
+    if (search) {
+      query.$or = [
+        { name:  { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { phone: { $regex: search, $options: 'i' } },
+        { query: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const [helpQueries, total] = await Promise.all([
+      HelpQuery.find(query).skip(skip).limit(Number(limit)).sort({ createdAt: -1 })
+        .populate('userId', 'fullName email mobile'),
+      HelpQuery.countDocuments(query)
+    ]);
+
+    // Count by status for badges
+    const statusCounts = await HelpQuery.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } }
+    ]);
+
+    res.json({ success: true, data: { helpQueries, total, page: Number(page), pages: Math.ceil(total / limit), statusCounts } });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// @route PUT /api/admin/help-queries/:id
+export const updateHelpQueryStatus = async (req, res) => {
+  try {
+    const { status, adminNote } = req.body;
+    const helpQuery = await HelpQuery.findById(req.params.id);
+    if (!helpQuery) return res.status(404).json({ success: false, message: 'Help query not found' });
+
+    if (status) helpQuery.status = status;
+    if (adminNote !== undefined) helpQuery.adminNote = adminNote;
+    await helpQuery.save();
+
+    res.json({ success: true, message: 'Help query updated', data: helpQuery });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// @route DELETE /api/admin/help-queries/:id
+export const deleteHelpQuery = async (req, res) => {
+  try {
+    const helpQuery = await HelpQuery.findByIdAndDelete(req.params.id);
+    if (!helpQuery) return res.status(404).json({ success: false, message: 'Help query not found' });
+    res.json({ success: true, message: 'Help query deleted' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

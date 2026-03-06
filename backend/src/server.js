@@ -15,6 +15,7 @@ import todoRoutes from './routes/todo.routes.js';
 import nomineeRoutes from './routes/nominee.routes.js';
 import biometricRoutes from './routes/biometric.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import helpQueryRoutes from './routes/helpQuery.routes.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
@@ -77,6 +78,7 @@ app.use('/api/todos', todoRoutes);
 app.use('/api/nominees', nomineeRoutes);
 app.use('/api/biometric', biometricRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/help', helpQueryRoutes);
 
 // 404 handler
 app.use((req, res) => {

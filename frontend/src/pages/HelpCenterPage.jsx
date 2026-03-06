@@ -1,23 +1,45 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { helpAPI } from '../services/api'
 import './HelpCenterPage.css'
 
 function HelpCenterPage() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
     phone: '',
     query: ''
   })
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState('')
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    setError('')
+    setSuccess('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Help form submitted:', formData)
+    if (!formData.name.trim() || !formData.email.trim() || !formData.query.trim()) {
+      setError('Name, email and query are required.')
+      return
+    }
+    setLoading(true)
+    setError('')
+    setSuccess('')
+    try {
+      await helpAPI.submit(formData)
+      setSuccess('Your query has been submitted! We will get back to you shortly.')
+      setFormData({ name: '', email: '', phone: '', query: '' })
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to submit. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -49,6 +71,17 @@ function HelpCenterPage() {
         </p>
 
         <form className="help-form" onSubmit={handleSubmit}>
+          {error && (
+            <div style={{ background: '#ffebee', color: '#c62828', padding: '12px 16px', borderRadius: 8, fontSize: 14 }}>
+              {error}
+            </div>
+          )}
+          {success && (
+            <div style={{ background: '#e8f5e9', color: '#2e7d32', padding: '12px 16px', borderRadius: 8, fontSize: 14 }}>
+              ✅ {success}
+            </div>
+          )}
+
           <input
             type="text"
             name="name"
@@ -59,9 +92,18 @@ function HelpCenterPage() {
           />
 
           <input
+            type="email"
+            name="email"
+            placeholder="Enter Your Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            className="help-input"
+          />
+
+          <input
             type="tel"
             name="phone"
-            placeholder="Enter Your Phone Number"
+            placeholder="Enter Your Phone Number (Optional)"
             value={formData.phone}
             onChange={handleChange}
             className="help-input"
@@ -69,15 +111,15 @@ function HelpCenterPage() {
 
           <textarea
             name="query"
-            placeholder="Please write  your Query"
+            placeholder="Please write your Query"
             value={formData.query}
             onChange={handleChange}
             className="help-textarea"
             rows="6"
           />
 
-          <button type="submit" className="submit-button">
-            Submit
+          <button type="submit" className="submit-button" disabled={loading}>
+            {loading ? 'Submitting…' : 'Submit'}
           </button>
         </form>
       </div>

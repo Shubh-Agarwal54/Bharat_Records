@@ -45,6 +45,13 @@ const NavIcon = ({ type }) => {
         <line x1="21" y1="12" x2="9" y2="12" />
       </svg>
     ),
+    help: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+    ),
   };
   return <span className="adm-nav-icon">{icons[type]}</span>;
 };
@@ -77,6 +84,7 @@ export default function AdminLayout() {
     '/admin/documents': 'Documents',
     '/admin/transactions': 'Transactions',
     '/admin/wallets': 'Wallets',
+    '/admin/help': 'Help Queries',
   };
 
   const currentPath = window.location.pathname;
@@ -124,6 +132,12 @@ export default function AdminLayout() {
             className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
           >
             <NavIcon type="wallets" /> Wallets
+          </NavLink>
+          <NavLink
+            to="/admin/help"
+            className={({ isActive }) => `adm-nav-item${isActive ? ' adm-active' : ''}`}
+          >
+            <NavIcon type="help" /> Help Queries
           </NavLink>
         </nav>
 
