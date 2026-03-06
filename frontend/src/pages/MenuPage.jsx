@@ -73,8 +73,12 @@ function MenuPage() {
             <span className="menu-label logout-label">Logout</span>
           </div>
         </div>
-      </div>
-
+        
+        </div>
+      <footer className="menu-footer" style={{ textAlign: 'center', marginTop: 20, color: '#777', fontSize: 12 }}>
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>Developed By <a href="https://torionsoftwares.com/">Torion Softwares </a></div>
+        <div>&copy; {new Date().getFullYear()} Torion Softwares. All rights reserved.</div>
+      </footer>
       <BottomNav />
     </div>
   )
