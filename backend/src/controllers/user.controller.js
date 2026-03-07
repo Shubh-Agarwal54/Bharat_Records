@@ -1,8 +1,9 @@
 import User from '../models/User.model.js';
 import Wallet from '../models/Wallet.model.js';
 import Document from '../models/Document.model.js';
+import Transaction from '../models/Transaction.model.js';
 import { sendOTP, verifyOTP } from '../utils/otp.utils.js';
-import { uploadToS3 } from '../utils/s3.utils.js';
+import { uploadToS3, deleteFromS3 } from '../utils/s3.utils.js';
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
@@ -299,6 +300,54 @@ export const changePassword = async (req, res) => {
       status: 'error',
       message: error.message
     });
+  }
+};
+
+// @desc    Permanently delete own account and all associated data
+// @route   DELETE /api/users/account
+// @access  Private
+export const deleteAccount = async (req, res) => {
+  try {
+    const { password, confirmText } = req.body;
+
+    if (confirmText !== 'DELETE') {
+      return res.status(400).json({ status: 'error', message: 'Type DELETE to confirm.' });
+    }
+
+    const user = await User.findById(req.user._id).select('+password');
+    if (!user) return res.status(404).json({ status: 'error', message: 'User not found' });
+
+    // For local-auth users, verify password before deletion
+    if (user.authProvider === 'local') {
+      if (!password) {
+        return res.status(400).json({ status: 'error', message: 'Password is required to delete your account.' });
+      }
+      const valid = await user.comparePassword(password);
+      if (!valid) {
+        return res.status(400).json({ status: 'error', message: 'Incorrect password.' });
+      }
+    }
+
+    // Delete all S3 files belonging to this user
+    const documents = await Document.find({ user: user._id });
+    const s3Deletions = documents
+      .filter(d => d.s3Key)
+      .map(d => deleteFromS3(d.s3Key).catch(() => {})); // soft-fail per file
+    await Promise.allSettled(s3Deletions);
+
+    // Wipe all DB records for this user
+    await Promise.all([
+      Document.deleteMany({ user: user._id }),
+      Transaction.deleteMany({ user: user._id }),
+      Wallet.deleteOne({ user: user._id }),
+    ]);
+
+    // Finally remove the user itself
+    await User.findByIdAndDelete(user._id);
+
+    res.json({ status: 'success', message: 'Account deleted successfully.' });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
   }
 };
 

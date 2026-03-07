@@ -47,6 +47,7 @@ import ReportsPage from './pages/ReportsPage'
 import SettingPage from './pages/SettingPage'
 import BiometricSecurityPage from './pages/BiometricSecurityPage'
 import PasswordSecurityPage from './pages/PasswordSecurityPage'
+import DeleteAccountPage from './pages/DeleteAccountPage'
 import UpdatePhoneOTPPage from './pages/UpdatePhoneOTPPage'
 import DocShareHistoryPage from './pages/DocShareHistoryPage'
 import HelpCenterPage from './pages/HelpCenterPage'
@@ -146,6 +147,7 @@ function App() {
         <Route path="/setting" element={<SettingPage />} />
         <Route path="/setting/biometric" element={<BiometricSecurityPage />} />
         <Route path="/setting/password" element={<PasswordSecurityPage />} />
+        <Route path="/setting/delete-account" element={<DeleteAccountPage />} />
         <Route path="/update-phone-otp" element={<UpdatePhoneOTPPage />} />
         <Route path="/doc-share-history" element={<DocShareHistoryPage />} />
         <Route path="/help-center" element={<HelpCenterPage />} />

@@ -8,7 +8,8 @@ import {
   updateEmail,
   verifyUpdateEmail,
   changePassword,
-  getReferrals
+  getReferrals,
+  deleteAccount
 } from '../controllers/user.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 
@@ -44,5 +45,6 @@ router.put('/update-email', updateEmail);
 router.put('/verify-update-email', verifyUpdateEmail);
 router.put('/change-password', changePassword);
 router.get('/referrals', getReferrals);
+router.delete('/account', deleteAccount);
 
 export default router;

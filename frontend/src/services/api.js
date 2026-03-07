@@ -180,6 +180,12 @@ export const userAPI = {
     const response = await api.get('/users/referrals');
     return response.data;
   },
+
+  // Permanently delete own account
+  deleteAccount: async (password, confirmText) => {
+    const response = await api.delete('/users/account', { data: { password, confirmText } });
+    return response.data;
+  },
 };
 
 // Biometric / WebAuthn APIs

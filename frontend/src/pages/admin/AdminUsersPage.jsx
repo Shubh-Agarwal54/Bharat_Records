@@ -190,9 +190,9 @@ export default function AdminUsersPage() {
                         {/* <button className="adm-btn adm-btn-outline adm-btn-sm" onClick={() => openEditSub(u)}>
                           Plan
                         </button> */}
-                        <button className="adm-btn adm-btn-danger adm-btn-sm" onClick={() => handleDeleteUser(u._id)}>
+                        {/* <button className="adm-btn adm-btn-danger adm-btn-sm" onClick={() => handleDeleteUser(u._id)}>
                           Delete
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>
